@@ -12,7 +12,7 @@ const topbar = document.getElementById("topbar");
 
 if (topbar) {
 
-    topbar.innerHTML = 
+    topbar.innerHTML = `
         <header class="topbar">
 
             <div class="topbar-left">
@@ -33,7 +33,7 @@ if (topbar) {
             </button>
 
         </header>
-    ;
+    `;
 }
 
 
@@ -45,7 +45,7 @@ const bottomNav = document.getElementById("bottom-nav");
 
 if (bottomNav) {
 
-    bottomNav.innerHTML = 
+    bottomNav.innerHTML = `
         <nav class="bottom-nav">
 
             <a href="index.html" class="nav-item active">
@@ -74,6 +74,6 @@ if (bottomNav) {
             </a>
 
         </nav>
-    ;
+    `;
 }
 
