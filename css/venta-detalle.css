@@ -1,0 +1,196 @@
+/* CONTENIDO */
+
+.main-content {
+    padding: 22px 16px 90px;
+    max-width: 900px;
+    margin: auto;
+}
+
+
+/* CABECERA DE LA VENTA */
+
+.sale-header {
+    background: white;
+
+    border: 1px solid #e5e7eb;
+
+    border-radius: 16px;
+
+    padding: 18px;
+
+    display: flex;
+    justify-content: space-between;
+
+    margin-bottom: 20px;
+}
+
+.sale-header span {
+    display: block;
+
+    color: #6b7280;
+
+    font-size: 11px;
+
+    margin-bottom: 5px;
+}
+
+.sale-header strong {
+    font-size: 15px;
+}
+
+.sale-date {
+    text-align: right;
+}
+
+
+/* SECCIONES */
+
+.detail-section,
+.payment-section {
+    background: white;
+
+    border: 1px solid #e5e7eb;
+
+    border-radius: 16px;
+
+    overflow: hidden;
+
+    margin-bottom: 15px;
+}
+
+
+/* ENCABEZADO PRODUCTOS */
+
+.section-heading {
+    padding: 16px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.section-heading h2 {
+    font-size: 17px;
+}
+
+.section-heading span {
+    color: #6b7280;
+
+    font-size: 11px;
+}
+
+
+/* PRODUCTOS */
+
+.product-row {
+    padding: 15px 16px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 15px;
+
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.product-row:last-child {
+    border-bottom: none;
+}
+
+.product-row div {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 4px;
+}
+
+.product-row strong {
+    font-size: 13px;
+}
+
+.product-row small {
+    color: #6b7280;
+
+    font-size: 11px;
+}
+
+
+/* PAGOS */
+
+.payment-row {
+    padding: 15px 16px;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.payment-row:last-child {
+    border-bottom: none;
+}
+
+.payment-row span {
+    color: #6b7280;
+
+    font-size: 13px;
+}
+
+.payment-row strong {
+    font-size: 14px;
+}
+
+.paid {
+    color: #16a34a;
+}
+
+.due {
+    color: #dc2626;
+}
+
+
+/* ESTADO */
+
+.status-badge {
+    width: fit-content;
+
+    margin: 5px 0 15px;
+
+    padding: 7px 10px;
+
+    border-radius: 8px;
+
+    background: #fef2f2;
+
+    color: #dc2626;
+
+    font-size: 11px;
+
+    font-weight: bold;
+}
+
+
+/* BOTÓN */
+
+.primary-button {
+    width: 100%;
+
+    padding: 13px;
+
+    border-radius: 12px;
+
+    background: #2563eb;
+
+    color: white;
+
+    font-size: 14px;
+
+    font-weight: bold;
+}

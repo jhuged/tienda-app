@@ -1,0 +1,177 @@
+/* CONTENIDO */
+
+.main-content {
+    padding: 22px 16px 90px;
+    max-width: 900px;
+    margin: auto;
+}
+
+
+/* RESUMEN */
+
+.sales-summary {
+    background: #111827;
+    color: white;
+
+    border-radius: 18px;
+
+    padding: 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-bottom: 25px;
+}
+
+.sales-summary span {
+    display: block;
+
+    font-size: 12px;
+
+    opacity: 0.7;
+
+    margin-bottom: 5px;
+}
+
+.sales-summary strong {
+    font-size: 28px;
+}
+
+.sales-count {
+    font-size: 12px;
+
+    background: rgba(255, 255, 255, 0.1);
+
+    padding: 8px 10px;
+
+    border-radius: 10px;
+}
+
+
+/* TÍTULO */
+
+.page-title {
+    margin-bottom: 15px;
+}
+
+.page-title h2 {
+    font-size: 20px;
+
+    margin-bottom: 5px;
+}
+
+.page-title p {
+    color: #6b7280;
+
+    font-size: 12px;
+}
+
+
+/* LISTA */
+
+.sales-list {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 10px;
+
+    margin-bottom: 20px;
+}
+
+
+/* VENTA */
+
+.sale-card {
+    background: white;
+
+    border: 1px solid #e5e7eb;
+
+    border-radius: 16px;
+
+    padding: 15px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+}
+
+.sale-main {
+    flex: 1;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 4px;
+}
+
+.sale-main strong {
+    font-size: 15px;
+}
+
+.sale-main span {
+    color: #6b7280;
+
+    font-size: 11px;
+}
+
+
+/* DINERO */
+
+.sale-money {
+    text-align: right;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 4px;
+}
+
+.sale-money strong {
+    font-size: 14px;
+}
+
+.sale-money span {
+    font-size: 11px;
+}
+
+.sale-due {
+    color: #dc2626;
+}
+
+.sale-paid {
+    color: #16a34a;
+}
+
+
+/* FLECHA */
+
+.sale-arrow {
+    color: #9ca3af;
+
+    font-size: 24px;
+}
+
+
+/* BOTÓN */
+
+.primary-button {
+    width: 100%;
+
+    padding: 13px;
+
+    border-radius: 12px;
+
+    background: #2563eb;
+
+    color: white;
+
+    font-size: 14px;
+
+    font-weight: bold;
+}

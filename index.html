@@ -13,7 +13,7 @@
 
 <body>
 
-    <!-- HEADER -->
+    <!-- TOP BAR -->
 
     <header class="topbar">
 
@@ -41,6 +41,7 @@
 
     <main class="main-content">
 
+
         <!-- BIENVENIDA -->
 
         <section class="welcome">
@@ -54,64 +55,201 @@
         </section>
 
 
-        <!-- ESTADÍSTICAS -->
+        <!-- COLECCIONES -->
 
-        <section class="stats-grid">
+        <section class="home-section">
 
-            <div class="stat-card">
-
-                <div class="stat-icon">
-                    📚
-                </div>
+            <div class="section-heading">
 
                 <div>
-                    <span>Colecciones</span>
-                    <strong>0</strong>
+                    <h2>Colecciones</h2>
+                    <p>Últimas colecciones</p>
+                </div>
+
+                <a href="pages/colecciones.html">
+                    Ver todo
+                </a>
+
+            </div>
+
+
+            <!-- SLIDER -->
+
+            <div class="home-slider">
+
+                <div class="home-collection-card">
+
+                    <div class="home-collection-image">
+                        📚
+                    </div>
+
+                    <strong>
+                        Mundial 2026
+                    </strong>
+
+                    <small>
+                        Álbum y figuritas
+                    </small>
+
+                </div>
+
+
+                <div class="home-collection-card">
+
+                    <div class="home-collection-image">
+                        🏆
+                    </div>
+
+                    <strong>
+                        Thundercats
+                    </strong>
+
+                    <small>
+                        Álbum y colección
+                    </small>
+
+                </div>
+
+
+                <div class="home-collection-card">
+
+                    <div class="home-collection-image">
+                        ⭐
+                    </div>
+
+                    <strong>
+                        Dragon Ball
+                    </strong>
+
+                    <small>
+                        Álbum y figuritas
+                    </small>
+
+                </div>
+
+
+                <div class="home-collection-card">
+
+                    <div class="home-collection-image">
+                        🦸
+                    </div>
+
+                    <strong>
+                        Superhéroes
+                    </strong>
+
+                    <small>
+                        Álbum y colección
+                    </small>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- CLIENTES -->
+
+        <section class="home-section">
+
+            <div class="section-heading">
+
+                <div>
+                    <h2>👤 Clientes</h2>
+                    <p>Clientes registrados</p>
+                </div>
+
+            </div>
+
+            <div class="summary-card">
+
+                <strong>0</strong>
+
+                <span>
+                    clientes registrados
+                </span>
+
+            </div>
+
+        </section>
+
+
+        <!-- VENTAS -->
+
+        <section class="home-section">
+
+            <div class="section-heading">
+
+                <div>
+                    <h2>🧾 Ventas</h2>
+                    <p>Resumen de hoy</p>
+                </div>
+
+            </div>
+
+            <div class="summary-card">
+
+                <strong>
+                    S/ 0.00
+                </strong>
+
+                <span>
+                    ventas del día
+                </span>
+
+            </div>
+
+        </section>
+
+
+        <!-- INGRESOS -->
+
+        <section class="home-section">
+
+            <div class="section-heading">
+
+                <div>
+                    <h2>💰 Por cobrar / ingresos</h2>
+                    <p>Resumen del día</p>
                 </div>
 
             </div>
 
 
-            <div class="stat-card">
+            <div class="money-grid">
 
-                <div class="stat-icon">
-                    👤
+                <div class="money-card">
+
+                    <span>
+                        Vendido
+                    </span>
+
+                    <strong>
+                        S/ 0.00
+                    </strong>
+
                 </div>
 
-                <div>
-                    <span>Clientes</span>
-                    <strong>0</strong>
-                </div>
 
-            </div>
+                <div class="money-card">
 
+                    <span>
+                        Gastado
+                    </span>
 
-            <div class="stat-card">
+                    <strong>
+                        S/ 0.00
+                    </strong>
 
-                <div class="stat-icon">
-                    📦
-                </div>
-
-                <div>
-                    <span>Productos</span>
-                    <strong>0</strong>
-                </div>
-
-            </div>
-
-
-            <div class="stat-card">
-
-                <div class="stat-icon">
-                    🃏
-                </div>
-
-                <div>
-                    <span>Figuritas</span>
-                    <strong>0</strong>
                 </div>
 
             </div>
+
+
+            <button class="primary-button">
+                + Nuevo ingreso
+            </button>
 
         </section>
 
@@ -120,106 +258,51 @@
 
         <section class="quick-section">
 
-            <h3>
-                Accesos rápidos
-            </h3>
+            <h2>Accesos rápidos</h2>
 
 
-            <div class="quick-list">
+            <div class="quick-grid">
 
+                <button class="quick-button">
+                    ➕
+                    <span>Nueva colección</span>
+                </button>
 
-                <a href="pages/colecciones.html" class="quick-item">
+                <button class="quick-button">
+                    ✏️
+                    <span>Editar colección</span>
+                </button>
 
-                    <span>
-                        📚
-                    </span>
+                <button class="quick-button">
+                    👤
+                    <span>Nuevo cliente</span>
+                </button>
 
-                    <div>
-
-                        <strong>
-                            Colecciones
-                        </strong>
-
-                        <small>
-                            Administrar colecciones y álbumes
-                        </small>
-
-                    </div>
-
-                    <b>
-                        ›
-                    </b>
-
-                </a>
-
-
-                <a href="pages/clientes.html" class="quick-item">
-
-                    <span>
-                        👤
-                    </span>
-
-                    <div>
-
-                        <strong>
-                            Clientes
-                        </strong>
-
-                        <small>
-                            Ver y administrar clientes
-                        </small>
-
-                    </div>
-
-                    <b>
-                        >>
-                    </b>
-
-                </a>
-
-
-                <a href="pages/dashboard.html" class="quick-item">
-
-                    <span>
-                        📊
-                    </span>
-
-                    <div>
-
-                        <strong>
-                            Dashboard
-                        </strong>
-
-                        <small>
-                            Ver estadísticas de la tienda
-                        </small>
-
-                    </div>
-
-                    <b>
-                        ›
-                    </b>
-
-                </a>
-
+                <button class="quick-button">
+                    ✏️
+                    <span>Editar cliente</span>
+                </button>
 
             </div>
 
+
+            <a href="pages/dashboard.html" class="dashboard-button">
+                📊 Abrir Dashboard
+            </a>
+
         </section>
+
 
     </main>
 
 
-    <!-- NAVEGACIÓN INFERIOR -->
+    <!-- BOTTOM BAR -->
 
     <nav class="bottom-nav">
 
-
         <a href="index.html" class="nav-item active">
 
-            <span>
-                🏠
-            </span>
+            <span>🏠</span>
 
             <small>
                 Inicio
@@ -230,9 +313,7 @@
 
         <a href="pages/colecciones.html" class="nav-item">
 
-            <span>
-                📚
-            </span>
+            <span>📚</span>
 
             <small>
                 Colecciones
@@ -243,9 +324,7 @@
 
         <a href="pages/clientes.html" class="nav-item">
 
-            <span>
-                👤
-            </span>
+            <span>👤</span>
 
             <small>
                 Clientes
@@ -256,9 +335,7 @@
 
         <a href="pages/dashboard.html" class="nav-item">
 
-            <span>
-                📊
-            </span>
+            <span>📊</span>
 
             <small>
                 Dashboard
@@ -266,9 +343,7 @@
 
         </a>
 
-
     </nav>
-
 
 </body>
 

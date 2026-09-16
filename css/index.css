@@ -1,19 +1,30 @@
+/* BASE */
+
 body {
     min-height: 100vh;
-    padding-bottom: 75px;
+    padding-bottom: 80px;
 }
 
 
-/* HEADER */
+/* TOP BAR */
 
 .topbar {
     height: 70px;
+
     background: white;
+
     display: flex;
     align-items: center;
     justify-content: space-between;
+
     padding: 0 18px;
+
     border-bottom: 1px solid #e5e7eb;
+
+    position: sticky;
+    top: 0;
+
+    z-index: 100;
 }
 
 .topbar-left {
@@ -24,6 +35,7 @@ body {
 
 .topbar h1 {
     font-size: 20px;
+    margin-bottom: 2px;
 }
 
 .topbar span {
@@ -34,15 +46,17 @@ body {
 .icon-button {
     background: transparent;
     font-size: 22px;
-    padding: 6px;
+    padding: 7px;
 }
 
 
 /* CONTENIDO */
 
 .main-content {
-    padding: 22px 16px;
-    max-width: 700px;
+    padding: 22px 16px 35px;
+
+    max-width: 900px;
+
     margin: auto;
 }
 
@@ -50,123 +64,296 @@ body {
 /* BIENVENIDA */
 
 .welcome {
-    margin-bottom: 22px;
+    margin-bottom: 28px;
 }
 
 .welcome h2 {
-    font-size: 25px;
+    font-size: 26px;
     margin-bottom: 5px;
 }
 
 .welcome p {
     color: #6b7280;
+    font-size: 14px;
 }
 
 
-/* ESTADÍSTICAS */
+/* SECCIONES */
 
-.stats-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
+.home-section {
+    margin-bottom: 30px;
 }
 
-.stat-card {
-    background: white;
-    border-radius: 16px;
-    padding: 18px 14px;
-
+.section-heading {
     display: flex;
-    align-items: center;
-    gap: 12px;
+    justify-content: space-between;
+    align-items: flex-end;
 
-    border: 1px solid #e5e7eb;
+    margin-bottom: 14px;
 }
 
-.stat-icon {
-    font-size: 27px;
-}
-
-.stat-card span {
-    display: block;
-    font-size: 12px;
-    color: #6b7280;
+.section-heading h2 {
+    font-size: 19px;
     margin-bottom: 4px;
 }
 
-.stat-card strong {
-    font-size: 22px;
+.section-heading p {
+    color: #6b7280;
+    font-size: 12px;
+}
+
+.section-heading a {
+    color: #2563eb;
+    font-size: 13px;
+    font-weight: bold;
 }
 
 
-/* ACCESOS */
+/* SLIDER DE COLECCIONES */
 
-.quick-section {
-    margin-top: 28px;
-}
-
-.quick-section h3 {
-    font-size: 18px;
-    margin-bottom: 12px;
-}
-
-.quick-list {
+.home-slider {
     display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
 
-.quick-item {
-    background: white;
-    border: 1px solid #e5e7eb;
-    border-radius: 15px;
-
-    padding: 16px;
-
-    display: flex;
-    align-items: center;
     gap: 14px;
+
+    overflow-x: auto;
+
+    padding-bottom: 8px;
+
+    scrollbar-width: none;
+
+    scroll-snap-type: x mandatory;
 }
 
-.quick-item > span {
+.home-slider::-webkit-scrollbar {
+    display: none;
+}
+
+
+/* TARJETA COLECCIÓN */
+
+.home-collection-card {
+    min-width: 175px;
+
+    background: white;
+
+    border: 1px solid #e5e7eb;
+
+    border-radius: 16px;
+
+    overflow: hidden;
+
+    scroll-snap-align: start;
+
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.home-collection-image {
+    height: 115px;
+
+    background: #f3f4f6;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    font-size: 50px;
+}
+
+.home-collection-card strong {
+    display: block;
+
+    padding: 12px 12px 3px;
+
+    font-size: 15px;
+}
+
+.home-collection-card small {
+    display: block;
+
+    padding: 0 12px 13px;
+
+    color: #6b7280;
+
+    font-size: 11px;
+}
+
+
+/* TARJETAS RESUMEN */
+
+.summary-card {
+    background: white;
+
+    border: 1px solid #e5e7eb;
+
+    border-radius: 16px;
+
+    padding: 18px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+}
+
+.summary-card strong {
     font-size: 25px;
 }
 
-.quick-item div {
-    flex: 1;
-}
-
-.quick-item strong {
-    display: block;
-    margin-bottom: 4px;
-}
-
-.quick-item small {
+.summary-card span {
     color: #6b7280;
+
     font-size: 12px;
 }
 
-.quick-item b {
-    font-size: 24px;
-    color: #9ca3af;
+
+/* DINERO */
+
+.money-grid {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 12px;
+
+    margin-bottom: 12px;
+}
+
+.money-card {
+    background: white;
+
+    border: 1px solid #e5e7eb;
+
+    border-radius: 16px;
+
+    padding: 17px;
+}
+
+.money-card span {
+    display: block;
+
+    color: #6b7280;
+
+    font-size: 12px;
+
+    margin-bottom: 7px;
+}
+
+.money-card strong {
+    font-size: 21px;
 }
 
 
-/* NAVEGACIÓN */
+/* BOTÓN PRINCIPAL */
+
+.primary-button {
+    width: 100%;
+
+    padding: 13px;
+
+    border-radius: 12px;
+
+    background: #2563eb;
+
+    color: white;
+
+    font-size: 14px;
+
+    font-weight: bold;
+}
+
+
+/* ACCESOS RÁPIDOS */
+
+.quick-section {
+    margin-top: 8px;
+}
+
+.quick-section > h2 {
+    font-size: 19px;
+
+    margin-bottom: 14px;
+}
+
+.quick-grid {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 10px;
+}
+
+.quick-button {
+    background: white;
+
+    border: 1px solid #e5e7eb;
+
+    border-radius: 14px;
+
+    padding: 16px 12px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 9px;
+
+    text-align: left;
+
+    font-size: 20px;
+}
+
+.quick-button span {
+    font-size: 13px;
+
+    font-weight: bold;
+}
+
+
+/* DASHBOARD */
+
+.dashboard-button {
+    display: block;
+
+    margin-top: 12px;
+
+    padding: 14px;
+
+    border-radius: 13px;
+
+    background: #111827;
+
+    color: white;
+
+    text-align: center;
+
+    font-weight: bold;
+
+    font-size: 14px;
+}
+
+
+/* BOTTOM BAR */
 
 .bottom-nav {
     position: fixed;
+
     bottom: 0;
     left: 0;
     right: 0;
 
-    height: 68px;
+    height: 70px;
 
     background: white;
+
     border-top: 1px solid #e5e7eb;
 
     display: flex;
+
     justify-content: space-around;
+
     align-items: center;
 
     z-index: 100;
@@ -174,8 +361,11 @@ body {
 
 .nav-item {
     display: flex;
+
     flex-direction: column;
+
     align-items: center;
+
     gap: 4px;
 
     color: #6b7280;
@@ -189,4 +379,19 @@ body {
 
 .nav-item.active {
     color: #2563eb;
+}
+
+
+/* PANTALLAS GRANDES */
+
+@media (min-width: 700px) {
+
+    .quick-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    .home-collection-card {
+        min-width: 190px;
+    }
+
 }
