@@ -1,5 +1,20 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&display=swap');
+
+:root {
+     --color-gold: #c89b3c;
+     --color-gold-dark: #9b7422;
+    --color-gold-soft: #fffaf0;
+     --color-black: #171717;
+     --color-ink: #292929;
+     --color-muted: #77736b;
+     --color-line: #e7e1d5;
+    --color-background: #ffffff;
+     --color-white: #ffffff;
+     --shadow-soft: 0 8px 24px rgba(46, 37, 20, 0.07);
+}
+
 /* ========================================
-   RESET
+    RESET
 ======================================== */
 
 * {
@@ -9,9 +24,9 @@
 }
 
 body {
-    font-family: Arial, Helvetica, sans-serif;
-    background: #f8fafc;
-    color: #111827;
+    font-family: 'Nunito', sans-serif;
+    background: var(--color-background);
+    color: var(--color-ink);
     padding-bottom: 78px;
 }
 
@@ -31,7 +46,7 @@ a {
 
 a:focus-visible,
 button:focus-visible {
-    outline: 3px solid rgba(37, 99, 235, 0.35);
+    outline: 3px solid rgba(200, 155, 60, 0.35);
     outline-offset: 2px;
 }
 
@@ -78,7 +93,7 @@ button:focus-visible {
     font-size: 20px;
     font-weight: 700;
     line-height: 1.1;
-    color: #2563eb;
+    color: var(--color-gold-dark);
     margin: 0;
 }
 
@@ -101,11 +116,11 @@ button:focus-visible {
     align-items: center;
     justify-content: center;
 
-    background: #f8fafc;
+    background: var(--color-white);
 
     border-radius: 12px;
 
-    color: #2563eb;
+    color: var(--color-gold-dark);
 
     transition:
         background-color 0.2s ease,
@@ -118,7 +133,7 @@ button:focus-visible {
 }
 
 .icon-button:hover {
-    background: #eff6ff;
+    background: var(--color-gold-soft);
 }
 
 .icon-button:active {
@@ -138,11 +153,11 @@ button:focus-visible {
     align-items: center;
     justify-content: center;
 
-    background: #f8fafc;
+    background: var(--color-white);
 
     border-radius: 12px;
 
-    color: #2563eb;
+    color: var(--color-gold-dark);
 
     font-size: 20px;
 }
@@ -218,15 +233,15 @@ button:focus-visible {
 ======================================== */
 
 .nav-item.active {
-    color: #2563eb;
+    color: var(--color-gold-dark);
 }
 
 .nav-item.active i {
-    color: #2563eb;
+    color: var(--color-gold-dark);
 }
 
 .nav-item:hover {
-    color: #2563eb;
+    color: var(--color-gold-dark);
 }
 
 .nav-item:active {
@@ -243,3 +258,80 @@ button:focus-visible {
         border-right: 1px solid #e5e7eb;
     }
 }
+
+.topbar,
+.bottom-nav {
+    background: var(--color-white);
+    border-color: var(--color-line);
+}
+
+.topbar h1,
+.icon-button,
+.back-button,
+.nav-item.active,
+.nav-item.active i,
+.nav-item:hover {
+    color: var(--color-gold-dark);
+}
+
+.icon-button,
+.back-button {
+    background: var(--color-gold-soft);
+}
+
+.primary-button,
+.dashboard-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 46px;
+    padding: 12px 18px;
+    color: var(--color-white) !important;
+    text-decoration: none;
+    background: var(--color-black) !important;
+    border: 1px solid var(--color-black);
+    border-radius: 10px;
+    transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.primary-button:hover,
+.dashboard-button:hover {
+    background: var(--color-gold-dark) !important;
+    border-color: var(--color-gold-dark);
+}
+
+.form-card,
+.data-card,
+.summary-card,
+.money-card,
+.dashboard-card,
+.dashboard-empty,
+.collection-grid-card,
+.client-card,
+.sale-card {
+    box-shadow: var(--shadow-soft);
+}
+
+.muted-link {
+    color: var(--color-muted) !important;
+}
+
+.primary-button:active,
+.dashboard-button:active {
+    transform: translateY(1px);
+}
+
+.main-content,
+.form-layout,
+.detail-layout,
+.inventory-page,
+.collection-dashboard,
+.dashboard-content {
+    padding-top: 30px;
+}
+
+.topbar-actions { display: flex; align-items: center; gap: 8px; }
+.cart-button { display: inline-flex; align-items: center; gap: 6px; padding: 9px 11px; border: 1px solid var(--color-gold); border-radius: 9px; color: var(--color-gold-dark); background: var(--color-white); font-size: 12px; font-weight: 800; }
+.cart-button:hover { background: var(--color-gold-soft); }
+@media (max-width: 560px) { .cart-button span { display: none; } .cart-button { width: 40px; height: 40px; justify-content: center; padding: 0; } }

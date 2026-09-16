@@ -1,0 +1,43 @@
+.form-layout {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 24px 16px 100px;
+}
+
+.form-card {
+    background: var(--color-white);
+    border: 1px solid var(--color-line);
+    border-radius: 16px;
+    padding: 22px;
+}
+
+.form-card h2 { margin-bottom: 6px; }
+.form-card > p { color: var(--color-muted); font-size: 13px; margin-bottom: 22px; }
+.form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.field { display: flex; flex-direction: column; gap: 6px; }
+.field.full { grid-column: 1 / -1; }
+.field label { font-size: 13px; font-weight: 700; }
+.field input, .field select, .field textarea {
+    width: 100%;
+    border: 1px solid var(--color-line);
+    border-radius: 9px;
+    padding: 11px 12px;
+    background: var(--color-white);
+    color: var(--color-ink);
+    font: inherit;
+}
+.field textarea { min-height: 90px; resize: vertical; }
+.field input:focus, .field select:focus, .field textarea:focus { outline: 2px solid rgba(200, 155, 60, .35); border-color: var(--color-gold); }
+.form-actions { display: flex; gap: 10px; margin-top: 22px; }
+.form-actions .primary-button { flex: 1; }
+.secondary-button { display: inline-flex; align-items: center; justify-content: center; padding: 12px 16px; border: 1px solid var(--color-line); color: var(--color-ink); border-radius: 10px; background: #fff; }
+.sale-lines { margin-top: 16px; border: 1px solid var(--color-line); border-radius: 10px; padding: 10px; }
+.sale-line { display: flex; align-items: center; gap: 10px; border-bottom: 1px solid var(--color-line); padding: 10px 0; font-size: 13px; }
+.sale-line:last-child { border-bottom: 0; }
+.sale-line span { flex: 1; }
+.sale-line input { width: 110px; border: 1px solid var(--color-line); border-radius: 7px; padding: 7px; font: inherit; }
+.remove-line { background: transparent; color: #9b3d2e; font-size: 20px; }
+.search-results { display: flex; flex-direction: column; border: 1px solid var(--color-line); border-radius: 8px; margin-top: 5px; overflow: hidden; }
+.search-result { padding: 10px; text-align: left; background: white; border-bottom: 1px solid var(--color-line); font: inherit; }
+.sale-total { display: flex; justify-content: space-between; margin-top: 14px; padding-top: 14px; border-top: 2px solid var(--color-black); font-weight: 800; }
+@media (max-width: 600px) { .form-grid { grid-template-columns: 1fr; } .field.full { grid-column: auto; } .form-card { padding: 16px; } .form-actions { flex-direction: column; } }

@@ -1,0 +1,5 @@
+[
+  {"id_coleccion":"COL-001","cantidad":1,"precio_compra":35,"precio_venta":45},
+  {"id_coleccion":"COL-001","cantidad":2,"precio_compra":68,"precio_venta":85},
+  {"id_coleccion":"COL-001","cantidad":3,"precio_compra":98,"precio_venta":120}
+]

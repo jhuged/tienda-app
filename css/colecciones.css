@@ -81,7 +81,7 @@
     align-items: center;
     justify-content: center;
 
-    background: #f3f4f6;
+    background: var(--color-white);
 
     font-size: 55px;
 }
@@ -125,7 +125,7 @@
 
 .section-header button {
     background: transparent;
-    color: #2563eb;
+    color: var(--color-gold-dark);
     font-weight: bold;
     font-size: 13px;
 }
@@ -166,6 +166,35 @@
     gap: 10px;
 
     font-size: 42px;
+    color: var(--color-ink);
+    text-decoration: none;
+    align-items: stretch;
+}
+
+.collection-create-card {
+    min-height: 90px;
+    border: 1px dashed var(--color-gold);
+    border-radius: 14px;
+    color: var(--color-gold-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 16px;
+    font-weight: 800;
+}
+
+.collection-grid-card .collection-image {
+    width: 100%;
+    height: 130px;
+    background-position: center;
+    background-size: cover;
+    border-radius: 10px;
+}
+
+.collection-grid-card small {
+    color: var(--color-muted);
+    font-size: 11px;
 }
 
 .collection-grid-card strong {

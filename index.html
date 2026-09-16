@@ -28,7 +28,7 @@
 
         <section class="welcome">
 
-            <h2>¡Hola! 👋</h2>
+            <h2>¡Hola, Jhuged!</h2>
 
             <p>
                 Bienvenido a tu tienda.
@@ -48,7 +48,7 @@
                     <p>Últimas colecciones</p>
                 </div>
 
-                <a href="pages/colecciones.html">
+                <a href="pages/colecciones.html" class="muted-link">
                     Ver todo
                 </a>
 
@@ -57,12 +57,11 @@
 
             <!-- SLIDER -->
 
-            <div class="home-slider">
+            <div class="home-slider" data-home-collections>
 
-                <div class="home-collection-card">
+                <a href="pages/coleccion-dashboard.html?collection=mundial-2026" class="home-collection-card">
 
-                    <div class="home-collection-image">
-                        📚
+                    <div class="home-collection-image" style="background-image: url('https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?auto=format&fit=crop&w=600&q=80');">
                     </div>
 
                     <strong>
@@ -73,13 +72,12 @@
                         Álbum y figuritas
                     </small>
 
-                </div>
+                </a>
 
 
-                <div class="home-collection-card">
+                <a href="pages/coleccion-dashboard.html?collection=thundercats" class="home-collection-card">
 
-                    <div class="home-collection-image">
-                        🏆
+                    <div class="home-collection-image" style="background-image: url('https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=600&q=80');">
                     </div>
 
                     <strong>
@@ -90,13 +88,12 @@
                         Álbum y colección
                     </small>
 
-                </div>
+                </a>
 
 
-                <div class="home-collection-card">
+                <a href="pages/coleccion-dashboard.html?collection=dragon-ball" class="home-collection-card">
 
-                    <div class="home-collection-image">
-                        ⭐
+                    <div class="home-collection-image" style="background-image: url('https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=600&q=80');">
                     </div>
 
                     <strong>
@@ -107,13 +104,12 @@
                         Álbum y figuritas
                     </small>
 
-                </div>
+                </a>
 
 
-                <div class="home-collection-card">
+                <a href="pages/coleccion-dashboard.html?collection=superheroes" class="home-collection-card">
 
-                    <div class="home-collection-image">
-                        🦸
+                    <div class="home-collection-image" style="background-image: url('https://images.unsplash.com/photo-1531259683007-016a7b628fc3?auto=format&fit=crop&w=600&q=80');">
                     </div>
 
                     <strong>
@@ -124,9 +120,11 @@
                         Álbum y colección
                     </small>
 
-                </div>
+                </a>
 
             </div>
+
+            <a href="pages/nueva-coleccion.html" class="outline-action"><i class="fi fi-rr-plus"></i> Nueva colección</a>
 
         </section>
 
@@ -138,7 +136,7 @@
             <div class="section-heading">
 
                 <div>
-                    <h2>👤 Clientes</h2>
+                    <h2>Clientes</h2>
                     <p>Clientes registrados</p>
                 </div>
 
@@ -146,13 +144,13 @@
 
             <div class="summary-card">
 
-                <strong>0</strong>
+                <strong data-client-count>0</strong>
 
-                <span>
-                    clientes registrados
-                </span>
+                <span>clientes registrados · 3 mejores clientes este mes</span>
 
             </div>
+
+            <a href="pages/nuevo-cliente.html" class="primary-button action-button"><i class="fi fi-rr-user-add"></i> Nuevo cliente</a>
 
         </section>
 
@@ -164,7 +162,7 @@
             <div class="section-heading">
 
                 <div>
-                    <h2>🧾 Ventas</h2>
+                    <h2>Ventas</h2>
                     <p>Resumen de hoy</p>
                 </div>
 
@@ -172,7 +170,7 @@
 
             <div class="summary-card">
 
-                <strong>
+                <strong data-home-sales-total>
                     S/ 0.00
                 </strong>
 
@@ -181,6 +179,13 @@
                 </span>
 
             </div>
+
+            <div class="data-card compact-table-card" data-home-sales-list>
+                <div class="card-label">Ventas de la semana</div>
+                <div class="mini-row"><span>Sin ventas todavía</span><strong>S/ 0.00</strong></div>
+            </div>
+
+            <a href="pages/preparar-carrito.html" class="primary-button action-button"><i class="fi fi-rr-shopping-cart"></i> Abrir carrito</a>
 
         </section>
 
@@ -192,7 +197,7 @@
             <div class="section-heading">
 
                 <div>
-                    <h2>💰 Por cobrar / ingresos</h2>
+                    <h2>Ingresos y cuentas por cobrar</h2>
                     <p>Resumen del día</p>
                 </div>
 
@@ -200,14 +205,13 @@
 
 
             <div class="money-grid">
-
                 <div class="money-card">
 
                     <span>
                         Vendido
                     </span>
 
-                    <strong>
+                    <strong data-home-income-total>
                         S/ 0.00
                     </strong>
 
@@ -220,7 +224,7 @@
                         Gastado
                     </span>
 
-                    <strong>
+                    <strong data-home-expense-total>
                         S/ 0.00
                     </strong>
 
@@ -228,10 +232,15 @@
 
             </div>
 
+            <div class="data-card debt-list">
+                <div class="card-label">Pendientes de pago</div>
+                <div class="mini-row"><span>Sin deudas todavía</span><strong class="debt-value">S/ 0.00</strong></div>
+            </div>
 
-            <button class="primary-button">
-                + Nuevo ingreso
-            </button>
+
+            <a class="primary-button action-button" href="pages/nuevo-ingreso.html">
+                <i class="fi fi-rr-plus"></i> Nuevo ingreso
+            </a>
 
         </section>
 
@@ -241,35 +250,8 @@
         <section class="quick-section">
 
             <h2>Accesos rápidos</h2>
-
-
-            <div class="quick-grid">
-
-                <button class="quick-button">
-                    ➕
-                    <span>Nueva colección</span>
-                </button>
-
-                <button class="quick-button">
-                    ✏️
-                    <span>Editar colección</span>
-                </button>
-
-                <button class="quick-button">
-                    👤
-                    <span>Nuevo cliente</span>
-                </button>
-
-                <button class="quick-button">
-                    ✏️
-                    <span>Editar cliente</span>
-                </button>
-
-            </div>
-
-
             <a href="pages/dashboard.html" class="dashboard-button">
-                📊 Abrir Dashboard
+                <i class="fi fi-rr-chart-histogram"></i> Abrir Dashboard
             </a>
 
         </section>

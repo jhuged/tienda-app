@@ -152,7 +152,7 @@
 }
 
 .due {
-    color: #dc2626;
+    color: #b42318;
 }
 
 
@@ -169,7 +169,7 @@
 
     background: #fef2f2;
 
-    color: #dc2626;
+    color: #b42318;
 
     font-size: 11px;
 
@@ -186,7 +186,7 @@
 
     border-radius: 12px;
 
-    background: #2563eb;
+    background: var(--color-black);
 
     color: white;
 
@@ -194,3 +194,6 @@
 
     font-weight: bold;
 }
+
+.payment-button { display: flex; align-items: center; justify-content: center; gap: 8px; }
+.payment-button:hover { background: var(--color-gold-dark) !important; }

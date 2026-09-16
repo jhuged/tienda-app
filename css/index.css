@@ -21,11 +21,14 @@ body {
 
 .welcome {
     margin-bottom: 28px;
+    text-align: center;
+    padding: 18px 12px 8px;
 }
 
 .welcome h2 {
-    font-size: 26px;
+    font-size: clamp(28px, 7vw, 42px);
     margin-bottom: 5px;
+    color: var(--color-black);
 }
 
 .welcome p {
@@ -59,7 +62,7 @@ body {
 }
 
 .section-heading a {
-    color: #2563eb;
+    color: var(--color-muted);
     font-size: 13px;
     font-weight: bold;
 }
@@ -102,12 +105,16 @@ body {
     scroll-snap-align: start;
 
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    color: var(--color-ink);
+    text-decoration: none;
 }
 
 .home-collection-image {
     height: 115px;
 
-    background: #f3f4f6;
+    background-color: var(--color-gold-soft);
+    background-position: center;
+    background-size: cover;
 
     display: flex;
 
@@ -211,7 +218,7 @@ body {
 
     border-radius: 12px;
 
-    background: #2563eb;
+    background: var(--color-black);
 
     color: white;
 
@@ -232,41 +239,6 @@ body {
 
     margin-bottom: 14px;
 }
-
-.quick-grid {
-    display: grid;
-
-    grid-template-columns: 1fr 1fr;
-
-    gap: 10px;
-}
-
-.quick-button {
-    background: white;
-
-    border: 1px solid #e5e7eb;
-
-    border-radius: 14px;
-
-    padding: 16px 12px;
-
-    display: flex;
-
-    align-items: center;
-
-    gap: 9px;
-
-    text-align: left;
-
-    font-size: 20px;
-}
-
-.quick-button span {
-    font-size: 13px;
-
-    font-weight: bold;
-}
-
 
 /* DASHBOARD */
 
@@ -294,13 +266,71 @@ body {
 /* PANTALLAS GRANDES */
 
 @media (min-width: 700px) {
-
-    .quick-grid {
-        grid-template-columns: repeat(4, 1fr);
-    }
-
     .home-collection-card {
         min-width: 190px;
     }
 
+}
+
+.outline-action,
+.action-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.outline-action {
+    margin-top: 14px;
+    padding: 13px;
+    border: 1px dashed var(--color-gold);
+    border-radius: 10px;
+    color: var(--color-gold-dark);
+    font-weight: 700;
+    background: transparent;
+}
+
+.data-card {
+    background: var(--color-white);
+    border: 1px solid var(--color-line);
+    border-radius: 14px;
+    padding: 14px;
+    margin: 12px 0;
+}
+
+.card-label {
+    color: var(--color-muted);
+    font-size: 12px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.mini-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 38px;
+    border-top: 1px solid var(--color-line);
+    font-size: 13px;
+}
+
+.mini-row span {
+    flex: 1;
+}
+
+.mini-row strong {
+    font-size: 13px;
+}
+
+.debt-value {
+    color: #b42318;
+}
+
+.mini-action {
+    padding: 6px 8px;
+    border-radius: 7px;
+    background: var(--color-gold-soft);
+    color: var(--color-gold-dark);
+    font-size: 11px;
+    font-weight: 700;
 }

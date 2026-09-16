@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nueva colección - Figuroom</title>
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/4.0.0/uicons-regular-rounded/css/uicons-regular-rounded.css">
+    <link rel="stylesheet" href="../css/forms.css">
+</head>
+<body>
+    <div id="topbar" data-title="Nueva colección" data-subtitle="Registra una colección"></div>
+    <main class="form-layout">
+        <form class="form-card" data-form="collection" data-success-url="colecciones.html">
+            <h2>Datos de la colección</h2>
+            <p>Completa la información básica para crear el espacio de inventario.</p>
+            <div class="form-grid">
+                <div class="field full"><label for="collection-name">Nombre</label><input id="collection-name" name="name" required placeholder="Ej. Mundial 2026"></div>
+                <div class="field"><label for="collection-figures">Número de figuritas</label><input id="collection-figures" name="figures" type="number" min="0" required placeholder="0"></div>
+                <div class="field"><label for="collection-year">Año</label><input id="collection-year" name="year" type="number" min="1900" max="2100" required placeholder="2026"></div>
+                <div class="field full"><label for="collection-publisher">Editorial</label><input id="collection-publisher" name="publisher" required placeholder="Editorial / marca"></div>
+            </div>
+            <div class="form-actions"><a class="secondary-button" href="colecciones.html">Cancelar</a><button class="primary-button" type="submit">Guardar colección</button></div>
+        </form>
+    </main>
+    <div id="bottom-nav"></div>
+    <script src="../js/components.js"></script>
+</body>
+</html>

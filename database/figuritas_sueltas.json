@@ -1,0 +1,5 @@
+[
+  {"id_coleccion":"COL-001","numero":"001","nombre":"Capitán del equipo","tipo":"Especial","precio_compra":1.5,"precio_venta":3,"stock":24},
+  {"id_coleccion":"COL-001","numero":"A-10","nombre":"Escudo dorado","tipo":"Alfanumérica","precio_compra":2,"precio_venta":4,"stock":8},
+  {"id_coleccion":"COL-001","numero":"025","nombre":"Estadio","tipo":"Regular","precio_compra":1.5,"precio_venta":3,"stock":36}
+]

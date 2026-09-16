@@ -1,0 +1,5 @@
+[
+  {"id_coleccion":"COL-001","tipo":"Sobre individual","precio_compra":3,"precio_venta":5,"stock":86},
+  {"id_coleccion":"COL-001","tipo":"Caja de 5 sobres","precio_compra":14,"precio_venta":23,"stock":18},
+  {"id_coleccion":"COL-001","tipo":"Caja de 10 sobres","precio_compra":27,"precio_venta":44,"stock":9}
+]

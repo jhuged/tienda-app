@@ -10,7 +10,7 @@
 /* RESUMEN */
 
 .sales-summary {
-    background: #111827;
+    background: var(--color-black);
     color: white;
 
     border-radius: 18px;
@@ -50,6 +50,12 @@
 
 
 /* TÍTULO */
+
+.weekly-summary { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 22px; }
+.weekly-summary > div { background: white; border: 1px solid var(--color-line); border-radius: 12px; padding: 14px; box-shadow: var(--shadow-soft); }
+.weekly-summary span { display: block; color: var(--color-muted); font-size: 11px; margin-bottom: 6px; }
+.weekly-summary strong { font-size: 17px; }
+.action-button { display: flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; }
 
 .page-title {
     margin-bottom: 15px;
@@ -97,6 +103,8 @@
     align-items: center;
 
     gap: 12px;
+    color: var(--color-ink);
+    text-decoration: none;
 }
 
 .sale-main {
@@ -141,7 +149,7 @@
 }
 
 .sale-due {
-    color: #dc2626;
+    color: #b42318;
 }
 
 .sale-paid {
@@ -167,7 +175,7 @@
 
     border-radius: 12px;
 
-    background: #2563eb;
+    background: var(--color-black);
 
     color: white;
 
@@ -175,3 +183,11 @@
 
     font-weight: bold;
 }
+
+@media (max-width: 600px) {
+    .weekly-summary { grid-template-columns: 1fr; }
+}
+
+.sales-empty { display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 42px 18px; background: white; border: 1px dashed var(--color-line); border-radius: 14px; color: var(--color-muted); text-align: center; }
+.sales-empty i { color: var(--color-gold-dark); font-size: 28px; }
+.sales-empty strong { color: var(--color-ink); }
