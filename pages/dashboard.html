@@ -1,28 +1,19 @@
-```html
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - Mi Tienda</title>
+    <title>Dashboard - Figuroom</title>
 
     <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/4.0.0/uicons-regular-rounded/css/uicons-regular-rounded.css">
     <link rel="stylesheet" href="../css/dashboard.css">
 </head>
 
 <body>
 
     <!-- TOP BAR -->
-    <header class="topbar">
-        <div class="topbar-left">
-            <a href="../index.html" class="back-button">←</a>
-
-            <div>
-                <h1>Dashboard</h1>
-                <span>Resumen de tu tienda</span>
-            </div>
-        </div>
-    </header>
+    <div id="topbar" data-title="Dashboard" data-subtitle="Resumen de tu tienda"></div>
 
     <!-- CONTENIDO PRINCIPAL -->
     <main class="dashboard-content">
@@ -149,35 +140,9 @@
 
 
     <!-- BOTTOM NAV -->
-    <nav class="bottom-nav">
+    <div id="bottom-nav"></div>
 
-        <a href="../index.html" class="nav-item">
-            <span>⌂</span>
-            Inicio
-        </a>
-
-        <a href="colecciones.html" class="nav-item">
-            <span>▣</span>
-            Colecciones
-        </a>
-
-        <a href="clientes.html" class="nav-item">
-            <span>♙</span>
-            Clientes
-        </a>
-
-        <a href="ventas.html" class="nav-item">
-            <span>▤</span>
-            Ventas
-        </a>
-
-        <a href="dashboard.html" class="nav-item active">
-            <span>▥</span>
-            Dashboard
-        </a>
-
-    </nav>
+    <script src="../js/components.js"></script>
 
 </body>
 </html>
-```
