@@ -1,0 +1,192 @@
+body {
+    min-height: 100vh;
+    padding-bottom: 75px;
+}
+
+
+/* HEADER */
+
+.topbar {
+    height: 70px;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 18px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.topbar-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.topbar h1 {
+    font-size: 20px;
+}
+
+.topbar span {
+    font-size: 12px;
+    color: #6b7280;
+}
+
+.icon-button {
+    background: transparent;
+    font-size: 22px;
+    padding: 6px;
+}
+
+
+/* CONTENIDO */
+
+.main-content {
+    padding: 22px 16px;
+    max-width: 700px;
+    margin: auto;
+}
+
+
+/* BIENVENIDA */
+
+.welcome {
+    margin-bottom: 22px;
+}
+
+.welcome h2 {
+    font-size: 25px;
+    margin-bottom: 5px;
+}
+
+.welcome p {
+    color: #6b7280;
+}
+
+
+/* ESTADÍSTICAS */
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.stat-card {
+    background: white;
+    border-radius: 16px;
+    padding: 18px 14px;
+
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    border: 1px solid #e5e7eb;
+}
+
+.stat-icon {
+    font-size: 27px;
+}
+
+.stat-card span {
+    display: block;
+    font-size: 12px;
+    color: #6b7280;
+    margin-bottom: 4px;
+}
+
+.stat-card strong {
+    font-size: 22px;
+}
+
+
+/* ACCESOS */
+
+.quick-section {
+    margin-top: 28px;
+}
+
+.quick-section h3 {
+    font-size: 18px;
+    margin-bottom: 12px;
+}
+
+.quick-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.quick-item {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 15px;
+
+    padding: 16px;
+
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.quick-item > span {
+    font-size: 25px;
+}
+
+.quick-item div {
+    flex: 1;
+}
+
+.quick-item strong {
+    display: block;
+    margin-bottom: 4px;
+}
+
+.quick-item small {
+    color: #6b7280;
+    font-size: 12px;
+}
+
+.quick-item b {
+    font-size: 24px;
+    color: #9ca3af;
+}
+
+
+/* NAVEGACIÓN */
+
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+    height: 68px;
+
+    background: white;
+    border-top: 1px solid #e5e7eb;
+
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+
+    z-index: 100;
+}
+
+.nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+
+    color: #6b7280;
+
+    font-size: 20px;
+}
+
+.nav-item small {
+    font-size: 10px;
+}
+
+.nav-item.active {
+    color: #2563eb;
+}
