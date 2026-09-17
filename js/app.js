@@ -801,6 +801,88 @@ if (debt <= 0) {
 }
 
 
+function setupSalePayment() {
+    const button = document.querySelector("[data-add-payment]");
+    if (!button) return;
+
+    button.addEventListener("click", () => {
+        const params = new URLSearchParams(window.location.search);
+        const saleId = params.get("id");
+
+        if (!saleId) {
+            alert("No se encontró la venta.");
+            return;
+        }
+
+        const sales = getStored("figuroom-sales", []);
+        const sale = sales.find((item) => item.id === saleId);
+
+        if (!sale) {
+            alert("No se encontró la venta.");
+            return;
+        }
+
+        const total = Number(sale.total || 0);
+        const paid = Number(sale.paid || 0);
+        const debt = Number(
+            sale.debt ?? Math.max(total - paid, 0)
+        );
+
+        if (debt <= 0) {
+            alert("Esta venta ya está pagada.");
+            return;
+        }
+
+        const input = window.prompt(
+            `Deuda actual: S/ ${debt.toFixed(2)}\n\n¿Cuánto paga el cliente?`
+        );
+
+        if (input === null) {
+            return;
+        }
+
+        const amount = Number(input.replace(",", "."));
+
+        if (!Number.isFinite(amount) || amount <= 0) {
+            alert("Ingresa un monto válido.");
+            return;
+        }
+
+        if (amount > debt) {
+            alert(
+                `El pago no puede ser mayor que la deuda de S/ ${debt.toFixed(2)}.`
+            );
+            return;
+        }
+
+        const newPaid = paid + amount;
+        const newDebt = Math.max(total - newPaid, 0);
+
+        sale.paid = newPaid;
+        sale.debt = newDebt;
+
+        if (!Array.isArray(sale.payments)) {
+            sale.payments = [];
+        }
+
+        sale.payments.push({
+            amount,
+            date: new Date().toLocaleDateString("es-PE")
+        });
+
+        saveStored("figuroom-sales", sales);
+
+        renderSaleDetail();
+
+        alert(
+            newDebt <= 0
+                ? "Venta pagada completamente."
+                : `Pago registrado: S/ ${amount.toFixed(2)}`
+        );
+    });
+}
+
+
 function renderHomeIncome() {
     const income = getStored("figuroom-income", []);
     const received = income.filter((item) => item.type === "Ingreso").reduce((sum, item) => sum + Number(item.amount || 0), 0);
@@ -1354,16 +1436,7 @@ function renderClientDetail() {
     if (debt) debt.textContent = `S/ ${Number(client.debt || 0).toFixed(2)}`;
 }
 
-function renderSaleDetail() {
-    const header = document.querySelector(".sale-header");
-    if (!header) return;
-    const saleId = new URLSearchParams(window.location.search).get("id");
-    const sale = getStored("figuroom-sales", []).find((item) => item.id === saleId);
-    if (!sale) {
-        const main = document.querySelector(".main-content");
-        if (main) main.innerHTML = '<div class="sales-empty"><i class="fi fi-rr-receipt"></i><strong>No hay detalle de venta</strong><span>Confirma un pedido desde el carrito para ver sus productos y precios.</span><a class="primary-button" href="preparar-carrito.html">Abrir carrito</a></div>';
-    }
-}
+
 
 renderCollections();
 renderClientDetail();
@@ -1371,7 +1444,7 @@ renderSaleDetail();
 renderHomeCollections();
 renderClients();
 renderSales();
-renderSaleDetail();
+
 renderHomeIncome();
 renderCollectionDashboard();
 renderInventoryPage();
@@ -1382,4 +1455,5 @@ setupInventoryProducts();
 
 setupClientForm();
 setupSaleForm();
+setupSalePayment();
 setupGenericForm();
