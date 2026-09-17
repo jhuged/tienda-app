@@ -1,1 +1,60 @@
-<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Figuritas sueltas - Figuroom</title><link rel="stylesheet" href="../css/components.css"><link rel="stylesheet" href="https://cdn-uicons.flaticon.com/4.0.0/uicons-regular-rounded/css/uicons-regular-rounded.css"><link rel="stylesheet" href="../css/category-pages.css"></head><body><div id="topbar" data-title="Figuritas sueltas" data-subtitle="Mundial 2026" data-back-href="coleccion-dashboard.html"></div><main class="category-page"><div class="category-intro"><h2>Figuritas sueltas</h2><p>Inventario independiente de esta colección.</p></div><div class="product-grid figure-grid"><article class="figure-card" data-product="Capitán del equipo #001"><div class="figure-image" style="background-image:url('https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?auto=format&fit=crop&w=500&q=80')"><span class="figure-number">001</span></div><div class="figure-info"><h3>Capitán del equipo</h3><span>Stock: <strong data-stock>0</strong></span><strong class="figure-price">S/ 3.00</strong><div class="figure-actions"><button type="button" class="edit-stock">Editar</button><button type="button" class="sell-product">Vender</button></div></div></article><article class="figure-card" data-product="Escudo dorado #A-10"><div class="figure-image" style="background-image:url('https://images.unsplash.com/photo-1523398002811-999ca8dec234?auto=format&fit=crop&w=500&q=80')"><span class="figure-number">A-10</span></div><div class="figure-info"><h3>Escudo dorado</h3><span>Stock: <strong data-stock>0</strong></span><strong class="figure-price">S/ 4.00</strong><div class="figure-actions"><button type="button" class="edit-stock">Editar</button><button type="button" class="sell-product">Vender</button></div></div></article><article class="figure-card" data-product="Estadio #025"><div class="figure-image" style="background-image:url('https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=500&q=80')"><span class="figure-number">025</span></div><div class="figure-info"><h3>Estadio</h3><span>Stock: <strong data-stock>0</strong></span><strong class="figure-price">S/ 3.00</strong><div class="figure-actions"><button type="button" class="edit-stock">Editar</button><button type="button" class="sell-product">Vender</button></div></div></article></div></main><div id="bottom-nav"></div><script src="../js/components.js"></script></body></html>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Figuroom - Figuritas</title>
+
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="../css/inventario.css">
+</head>
+
+<body>
+
+    <!-- TOPBAR -->
+    <div
+        data-component="topbar"
+        data-title="Figuroom"
+        data-subtitle="Figuritas"
+        data-back-href="coleccion-dashboard.html"
+    ></div>
+
+    <!-- CONTENIDO -->
+    <main class="page-content inventory-page">
+
+        <section class="page-header">
+            <div>
+                <h1>Figuritas</h1>
+                <p>Administra las figuritas de esta colección.</p>
+            </div>
+
+            <a
+                href="nueva-figurita.html"
+                class="btn btn-primary"
+                data-new-item
+            >
+                <i class="fi fi-rr-plus"></i>
+                Nueva figurita
+            </a>
+        </section>
+
+        <!--
+            El contenido se genera dinámicamente desde app.js.
+            No colocar productos directamente aquí.
+        -->
+        <section
+            class="product-grid figure-grid"
+            data-inventory-grid
+        ></section>
+
+    </main>
+
+    <!-- BOTTOM NAV -->
+    <div data-component="bottom-nav"></div>
+
+    <script src="../js/components.js"></script>
+    <script src="../js/app.js"></script>
+
+</body>
+</html>
