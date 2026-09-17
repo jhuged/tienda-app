@@ -1,7 +1,5 @@
 const initialCollections = [
-    { id: "COL-001", name: "Mundial 2026", figures: 340, publisher: "Panini", year: 2026, image: "https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?auto=format&fit=crop&w=600&q=80" },
-    { id: "COL-002", name: "Thundercats", figures: 180, publisher: "Figuroom", year: 2026, image: "https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=600&q=80" },
-    { id: "COL-003", name: "Dragon Ball", figures: 240, publisher: "Toei", year: 2025, image: "https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=600&q=80" }
+    { id: "COL-001", name: "Dragon Ball", figures: 240, publisher: "Toei", year: 2025, image: "https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=600&q=80" }
 ];
 
 const initialClients = [];
@@ -89,74 +87,340 @@ function setupClientForm() {
     });
 }
 
+
 function setupGenericForm() {
     const form = document.querySelector("[data-form]");
+
     if (!form || form.dataset.form === "client" || form.dataset.form === "sale") return;
+
     const params = new URLSearchParams(window.location.search);
+
     const collectionField = form.querySelector("[name='collectionId']");
+
     if (collectionField) {
-        collectionField.innerHTML = getCollections().map((collection) => `<option value="${collection.id}">${collection.name}</option>`).join("");
-        if (params.get("collection")) collectionField.value = params.get("collection");
+        collectionField.innerHTML = getCollections()
+            .map((collection) => `
+                <option value="${collection.id}">
+                    ${collection.name}
+                </option>
+            `)
+            .join("");
+
+        if (params.get("collection")) {
+            collectionField.value = params.get("collection");
+        }
     }
+
     const categoryField = form.querySelector("[name='category']");
-    if (categoryField && params.get("category")) categoryField.value = params.get("category");
+
+    if (categoryField && params.get("category")) {
+        categoryField.value = params.get("category");
+    }
+
     if (form.dataset.form === "preorder") {
         const clientField = form.querySelector("[name='clientId']");
-        getClients().forEach((client) => clientField?.add(new Option(`${client.name} · ${client.id}`, client.id)));
+
+        getClients().forEach((client) => {
+            clientField?.add(
+                new Option(`${client.name} · ${client.id}`, client.id)
+            );
+        });
     }
-    if (form.dataset.form === "promotion") form.querySelector("[name='stock']")?.closest(".field")?.remove();
+
+    if (form.dataset.form === "promotion") {
+        form.querySelector("[name='stock']")?.closest(".field")?.remove();
+    }
+
     if (form.dataset.form === "income" && !form.querySelector("[name='image']")) {
         const imageField = document.createElement("div");
+
         imageField.className = "field full";
-        imageField.innerHTML = '<label>Imagen opcional (URL)</label><input name="image" type="url" placeholder="https://...">';
+
+        imageField.innerHTML = `
+            <label>Imagen opcional (URL)</label>
+            <input name="image" type="url" placeholder="https://...">
+        `;
+
         form.querySelector(".form-grid")?.append(imageField);
     }
-    if (["collection", "product", "bundle", "promotion"].includes(form.dataset.form) && !form.querySelector("[name='image']")) {
+
+    if (
+        ["collection", "product", "bundle", "promotion"].includes(form.dataset.form) &&
+        !form.querySelector("[name='image']")
+    ) {
         const imageField = document.createElement("div");
+
         imageField.className = "field full";
-        imageField.innerHTML = '<label>Imagen opcional (URL)</label><input name="image" type="url" placeholder="https://...">';
+
+        imageField.innerHTML = `
+            <label>Imagen opcional (URL)</label>
+            <input name="image" type="url" placeholder="https://...">
+        `;
+
         form.querySelector(".form-grid")?.append(imageField);
     }
+
+    /*
+     * EDITAR COLECCIÓN
+     */
+    const editId = params.get("edit");
+
+    if (form.dataset.form === "collection" && editId) {
+        const collection = getCollections().find(
+            (item) => item.id === editId
+        );
+
+        if (collection) {
+            const nameField = form.querySelector("[name='name']");
+            const figuresField = form.querySelector("[name='figures']");
+            const yearField = form.querySelector("[name='year']");
+            const publisherField = form.querySelector("[name='publisher']");
+
+            if (nameField) nameField.value = collection.name;
+            if (figuresField) figuresField.value = collection.figures;
+            if (yearField) yearField.value = collection.year;
+            if (publisherField) publisherField.value = collection.publisher;
+
+            const title = form.querySelector("h2");
+            const description = form.querySelector("p");
+            const submitButton = form.querySelector("button[type='submit']");
+
+            if (title) {
+                title.textContent = "Editar colección";
+            }
+
+            if (description) {
+                description.textContent =
+                    "Modifica la información de la colección.";
+            }
+
+            if (submitButton) {
+                submitButton.textContent = "Guardar cambios";
+            }
+
+            const topbar = document.querySelector("#topbar");
+
+            if (topbar) {
+                topbar.dataset.title = "Editar colección";
+                topbar.dataset.subtitle = "Modifica la información";
+            }
+        }
+    }
+
     form.addEventListener("submit", (event) => {
         event.preventDefault();
+
         const data = Object.fromEntries(new FormData(form));
+
         if (form.dataset.form === "collection") {
-            const collectionId = `COL-${String(getCollections().length + 1).padStart(3, "0")}`;
-            saveStored("figuroom-collections", [...getCollections(), { id: collectionId, name: data.name, figures: Number(data.figures), publisher: data.publisher, year: Number(data.year), image: "https://images.unsplash.com/photo-1523398002811-999ca8dec234?auto=format&fit=crop&w=600&q=80" }]);
-            saveStored(`figuroom-inventory-${collectionId}`, { figuritas: [], sobres: [], albums: [], cards: [], paquetones: [], promociones: [], preventa: [] });
+
+            /*
+             * SI ESTAMOS EDITANDO
+             */
+            if (editId) {
+                const collections = getCollections();
+
+                const existingCollection = collections.find(
+                    (collection) => collection.id === editId
+                );
+
+                if (!existingCollection) {
+                    alert("No se encontró la colección que quieres editar.");
+                    return;
+                }
+
+                const updatedCollections = collections.map((collection) => {
+                    if (collection.id !== editId) {
+                        return collection;
+                    }
+
+                    return {
+                        ...collection,
+                        name: data.name,
+                        figures: Number(data.figures),
+                        publisher: data.publisher,
+                        year: Number(data.year)
+                    };
+                });
+
+                saveStored(
+                    "figuroom-collections",
+                    updatedCollections
+                );
+
+            } else {
+
+                /*
+                 * CREAR NUEVA COLECCIÓN
+                 */
+                
+                const collections = getCollections();
+
+                const highestId = collections.reduce((max, collection) => {
+                    const match = String(collection.id).match(/^COL-(\d+)$/);
+
+                    if (!match) return max;
+
+                    return Math.max(max, Number(match[1]));
+                }, 0);
+
+                const collectionId = `COL-${String(highestId + 1).padStart(3, "0")}`;
+
+
+
+                saveStored(
+                    "figuroom-collections",
+                    [
+                        ...getCollections(),
+                        {
+                            id: collectionId,
+                            name: data.name,
+                            figures: Number(data.figures),
+                            publisher: data.publisher,
+                            year: Number(data.year),
+                            image: "https://images.unsplash.com/photo-1523398002811-999ca8dec234?auto=format&fit=crop&w=600&q=80"
+                        }
+                    ]
+                );
+
+                saveStored(
+                    `figuroom-inventory-${collectionId}`,
+                    {
+                        figuritas: [],
+                        sobres: [],
+                        albums: [],
+                        cards: [],
+                        paquetones: [],
+                        promociones: [],
+                        preventa: []
+                    }
+                );
+            }
+
         } else if (form.dataset.form === "product") {
+
             const collectionId = data.collectionId || "COL-001";
             const inventory = getInventory(collectionId);
             const category = data.category;
-            inventory[category].push({ id: `PRD-${Date.now()}`, name: data.name, number: data.number || "", type: data.type || "", price: Number(data.price || 0), stock: Number(data.stock || 0) });
+
+            inventory[category].push({
+                id: `PRD-${Date.now()}`,
+                name: data.name,
+                number: data.number || "",
+                type: data.type || "",
+                price: Number(data.price || 0),
+                stock: Number(data.stock || 0)
+            });
+
             saveInventory(collectionId, inventory);
+
         } else if (form.dataset.form === "bundle") {
-            const inventory = getInventory(data.collectionId || "COL-001");
-            inventory[data.category].push({ id: `BND-${Date.now()}`, name: `${data.quantity} ${data.category === "sobres" ? "sobres" : "paquetones"}`, quantity: Number(data.quantity), price: Number(data.price || 0), stock: Number(data.stock || 0) });
-            saveInventory(data.collectionId || "COL-001", inventory);
-        } else if (form.dataset.form === "promotion") {
-            const inventory = getInventory(data.collectionId || "COL-001");
-            const requestedProducts = data.products.split(",").map((entry) => entry.trim()).filter(Boolean);
-            const availableStock = requestedProducts.length ? Math.min(...requestedProducts.map((entry) => {
-                const match = entry.match(/(.+?)(?:\s+x\s*(\d+))?$/i);
-                const product = inventoryCategories.filter((category) => category !== "promociones").flatMap((category) => inventory[category]).find((item) => item.name.toLowerCase() === match[1].trim().toLowerCase());
-                return product ? Math.floor(Number(product.stock || 0) / Number(match[2] || 1)) : 0;
-            })) : 0;
-            inventory.promociones.push({ id: `PROM-${Date.now()}`, name: data.name, products: data.products, price: Number(data.price || 0), stock: availableStock, image: data.image || "" });
-            saveInventory(data.collectionId || "COL-001", inventory);
-        } else if (form.dataset.form === "preorder") {
+
             const collectionId = data.collectionId || "COL-001";
             const inventory = getInventory(collectionId);
-            inventory.preventa.push({ id: `PRE-${Date.now()}`, clientId: data.clientId, products: data.products, quantity: Number(data.quantity), deliveryDate: data.deliveryDate || "", image: data.image || "", stock: 0 });
+
+            inventory[data.category].push({
+                id: `BND-${Date.now()}`,
+                name: `${data.quantity} ${data.category === "sobres" ? "sobres" : "paquetones"}`,
+                quantity: Number(data.quantity),
+                price: Number(data.price || 0),
+                stock: Number(data.stock || 0)
+            });
+
             saveInventory(collectionId, inventory);
+
+        } else if (form.dataset.form === "promotion") {
+
+            const collectionId = data.collectionId || "COL-001";
+            const inventory = getInventory(collectionId);
+
+            const requestedProducts = data.products
+                .split(",")
+                .map((entry) => entry.trim())
+                .filter(Boolean);
+
+            const availableStock = requestedProducts.length
+                ? Math.min(
+                    ...requestedProducts.map((entry) => {
+                        const match = entry.match(
+                            /(.+?)(?:\s+x\s*(\d+))?$/i
+                        );
+
+                        const product = inventoryCategories
+                            .filter((category) => category !== "promociones")
+                            .flatMap((category) => inventory[category])
+                            .find(
+                                (item) =>
+                                    item.name.toLowerCase() ===
+                                    match[1].trim().toLowerCase()
+                            );
+
+                        return product
+                            ? Math.floor(
+                                Number(product.stock || 0) /
+                                Number(match[2] || 1)
+                            )
+                            : 0;
+                    })
+                )
+                : 0;
+
+            inventory.promociones.push({
+                id: `PROM-${Date.now()}`,
+                name: data.name,
+                products: data.products,
+                price: Number(data.price || 0),
+                stock: availableStock,
+                image: data.image || ""
+            });
+
+            saveInventory(collectionId, inventory);
+
+        } else if (form.dataset.form === "preorder") {
+
+            const collectionId = data.collectionId || "COL-001";
+            const inventory = getInventory(collectionId);
+
+            inventory.preventa.push({
+                id: `PRE-${Date.now()}`,
+                clientId: data.clientId,
+                products: data.products,
+                quantity: Number(data.quantity),
+                deliveryDate: data.deliveryDate || "",
+                image: data.image || "",
+                stock: 0
+            });
+
+            saveInventory(collectionId, inventory);
+
         } else if (form.dataset.form === "income") {
-            saveStored("figuroom-income", [...getStored("figuroom-income", []), { id: `ING-${Date.now()}`, ...data, amount: Number(data.amount), date: new Date().toLocaleDateString("es-PE") }]);
+
+            saveStored(
+                "figuroom-income",
+                [
+                    ...getStored("figuroom-income", []),
+                    {
+                        id: `ING-${Date.now()}`,
+                        ...data,
+                        amount: Number(data.amount),
+                        date: new Date().toLocaleDateString("es-PE")
+                    }
+                ]
+            );
+
         } else {
-            localStorage.setItem(`figuroom-${form.dataset.form}`, JSON.stringify(data));
+
+            localStorage.setItem(
+                `figuroom-${form.dataset.form}`,
+                JSON.stringify(data)
+            );
         }
-        window.location.href = form.dataset.successUrl || "../index.html";
+
+        window.location.href =
+            form.dataset.successUrl || "../index.html";
     });
 }
+
 
 function setupSaleForm() {
     const form = document.querySelector("[data-form='sale']");
@@ -233,9 +497,81 @@ function setupSaleForm() {
 function renderCollections() {
     const grid = document.querySelector("[data-collections-grid]");
     if (!grid) return;
-    grid.innerHTML = getCollections().map((collection) => `<a href="coleccion-dashboard.html?collection=${encodeURIComponent(collection.id)}" class="collection-grid-card"><div class="collection-image" style="background-image:url('${collection.image}')"></div><strong>${collection.name}</strong><small>${collection.publisher} · ${collection.figures} figuritas</small><small>Año: ${collection.year}</small></a>`).join("");
-}
 
+    const collections = getCollections();
+
+    grid.innerHTML = collections.map((collection) => `
+        <article class="collection-grid-card">
+            <a href="coleccion-dashboard.html?collection=${encodeURIComponent(collection.id)}" class="collection-card-main">
+                <div class="collection-image" style="background-image:url('${collection.image}')"></div>
+                <strong>${collection.name}</strong>
+                <small>${collection.publisher} · ${collection.figures} figuritas</small>
+                <small>Año: ${collection.year}</small>
+            </a>
+
+            <div class="collection-card-actions">
+                <button
+                    type="button"
+                    class="collection-action-edit"
+                    data-edit-collection="${collection.id}"
+                    aria-label="Editar ${collection.name}"
+                >
+                    <i class="fi fi-rr-pencil"></i>
+                    <span></span>
+                </button>
+
+                <button
+                    type="button"
+                    class="collection-action-delete"
+                    data-delete-collection="${collection.id}"
+                    aria-label="Eliminar ${collection.name}"
+                >
+                    <i class="fi fi-rr-trash"></i>
+                    <span></span>
+                </button>
+            </div>
+        </article>
+    `).join("");
+
+    grid.querySelectorAll("[data-edit-collection]").forEach((button) => {
+        button.addEventListener("click", (event) => {
+            event.preventDefault();
+            event.stopPropagation();
+
+            const collectionId = button.dataset.editCollection;
+            window.location.href = `nueva-coleccion.html?edit=${encodeURIComponent(collectionId)}`;
+        });
+    });
+
+    grid.querySelectorAll("[data-delete-collection]").forEach((button) => {
+        button.addEventListener("click", (event) => {
+            event.preventDefault();
+            event.stopPropagation();
+
+            const collectionId = button.dataset.deleteCollection;
+            const collection = getCollections().find((item) => item.id === collectionId);
+
+            if (!collection) return;
+
+            const confirmed = window.confirm(
+                `¿Seguro que quieres eliminar la colección "${collection.name}"?`
+            );
+
+            if (!confirmed) return;
+
+            const updatedCollections = getCollections().filter(
+                (item) => item.id !== collectionId
+            );
+
+            saveStored("figuroom-collections", updatedCollections);
+
+            localStorage.removeItem(`figuroom-inventory-${collectionId}`);
+
+            renderCollections();
+            renderHomeCollections();
+        });
+    });
+}
 function renderHomeCollections() {
     const slider = document.querySelector("[data-home-collections]");
     if (!slider) return;
@@ -274,40 +610,229 @@ function renderHomeIncome() {
 }
 
 function renderCollectionDashboard() {
-    const cover = document.querySelector(".collection-cover");
-    if (!cover) return;
-    const id = new URLSearchParams(window.location.search).get("collection");
-    const collection = getCollections().find((item) => item.id === id) || getCollections()[0];
+    const dashboard = document.querySelector(".collection-dashboard");
+
+    if (!dashboard) return;
+
+    const params = new URLSearchParams(window.location.search);
+    const collectionId = params.get("collection");
+
+    if (!collectionId) return;
+
+    const collection = getCollections().find(
+        (item) => item.id === collectionId
+    );
+
     if (!collection) return;
-    const title = cover.querySelector("h2");
-    const meta = cover.querySelector("span");
-    if (title) title.textContent = collection.name;
-    if (meta) meta.textContent = `${collection.publisher} · ${collection.year}`;
-    cover.style.backgroundImage = `linear-gradient(135deg, rgba(23,23,23,.86), rgba(155,116,34,.8)), url('${collection.image}')`;
-    document.querySelectorAll(".category-card").forEach((card) => {
-        const url = new URL(card.href, window.location.href);
-        card.href = url.href;
-        const label = card.querySelector("strong")?.textContent || "";
-        const action = document.createElement("button");
-        action.type = "button";
-        action.className = "category-add-link";
-        if (label.includes("Figuritas") || label.includes("Álbumes") || label.includes("Cards")) {
-            action.dataset.href = label.includes("Figuritas") ? `nueva-figurita.html?collection=${collection.id}` : label.includes("Álbumes") ? `nuevo-album.html?collection=${collection.id}` : `crear-card.html?collection=${collection.id}`;
-            action.textContent = label.includes("Figuritas") ? "Nueva figurita" : label.includes("Álbumes") ? "Nuevo álbum" : "Crear card";
-        } else if (label.includes("Sobres") || label.includes("Paquetones")) {
-            action.dataset.href = `nueva-presentacion.html?collection=${collection.id}`;
-            action.textContent = label.includes("Sobres") ? "Agregar sobre" : "Agregar paquetón";
-        } else if (label.includes("Promociones")) {
-            action.dataset.href = `nueva-promocion.html?collection=${collection.id}`;
-            action.textContent = "Nueva promoción";
-        } else if (label.includes("Preventa")) {
-            action.dataset.href = `nueva-preventa.html?collection=${collection.id}`;
-            action.textContent = "Añadir preventa";
+
+    const inventory = getInventory(collectionId);
+
+    // Información principal de la colección
+    const cover = dashboard.querySelector("[data-collection-cover]");
+    const publisher = dashboard.querySelector("[data-collection-publisher]");
+    const name = dashboard.querySelector("[data-collection-name]");
+    const year = dashboard.querySelector("[data-collection-year]");
+
+    if (publisher) {
+        publisher.textContent = collection.publisher;
+    }
+
+    if (name) {
+        name.textContent = collection.name;
+    }
+
+    if (year) {
+        year.textContent = collection.year;
+    }
+
+    if (cover) {
+        cover.style.backgroundImage =
+            `linear-gradient(135deg, rgba(23,23,23,.86), rgba(155,116,34,.8)), url('${collection.image}')`;
+    }
+
+    // Cantidad de productos por categoría
+    const categoryCounts = {};
+
+    inventoryCategories.forEach((category) => {
+        categoryCounts[category] = Array.isArray(inventory[category])
+            ? inventory[category].length
+            : 0;
+    });
+
+    // Total de productos registrados
+    const totalProducts = inventoryCategories.reduce(
+        (total, category) => total + categoryCounts[category],
+        0
+    );
+
+    // Total de unidades disponibles
+    const totalStock = inventoryCategories.reduce((total, category) => {
+        return total + inventory[category].reduce(
+            (subtotal, product) => subtotal + Number(product.stock || 0),
+            0
+        );
+    }, 0);
+
+    // Productos con stock bajo
+    const lowStockProducts = inventoryCategories.reduce((total, category) => {
+        return total + inventory[category].filter(
+            (product) => Number(product.stock || 0) > 0 &&
+                          Number(product.stock || 0) <= 5
+        ).length;
+    }, 0);
+
+    // Categorías sin productos
+    const emptyCategories = inventoryCategories.filter(
+        (category) => categoryCounts[category] === 0
+    ).length;
+
+    // Categorías que ya tienen productos
+    const activeCategories = inventoryCategories.filter(
+        (category) => categoryCounts[category] > 0
+    ).length;
+
+    // Porcentaje de categorías con inventario
+    const inventoryPercentage = Math.round(
+        (activeCategories / inventoryCategories.length) * 100
+    );
+
+    // Productos activos
+    const productsElement = dashboard.querySelector(
+        "[data-stat-products]"
+    );
+
+    if (productsElement) {
+        productsElement.textContent = totalProducts;
+    }
+
+    // Stock bajo
+    const lowStockElement = dashboard.querySelector(
+        "[data-stat-low-stock]"
+    );
+
+    if (lowStockElement) {
+        lowStockElement.textContent = lowStockProducts;
+    }
+
+    // Fecha
+    const dateElement = dashboard.querySelector(
+        "[data-stat-date]"
+    );
+
+    if (dateElement) {
+        dateElement.textContent = "Activa";
+    }
+
+    // Ventas de esta colección
+    const sales = getStored("figuroom-sales", []);
+
+    const collectionSales = sales.filter((sale) => {
+        return Array.isArray(sale.products) &&
+            sale.products.some(
+                (product) => product.collectionId === collectionId
+            );
+    });
+
+    const collectionSalesTotal = collectionSales.reduce(
+        (total, sale) => total + Number(sale.total || 0),
+        0
+    );
+
+    const salesElement = dashboard.querySelector(
+        "[data-stat-sales]"
+    );
+
+    if (salesElement) {
+        salesElement.textContent =
+            `S/ ${collectionSalesTotal.toFixed(2)}`;
+    }
+
+    // Resumen de inventario
+    const percentageElement = dashboard.querySelector(
+        "[data-inventory-percentage]"
+    );
+
+    const progressElement = dashboard.querySelector(
+        "[data-inventory-progress]"
+    );
+
+    const messageElement = dashboard.querySelector(
+        "[data-inventory-message]"
+    );
+
+    if (percentageElement) {
+        percentageElement.textContent =
+            `${inventoryPercentage}%`;
+    }
+
+    if (progressElement) {
+        progressElement.style.width =
+            `${inventoryPercentage}%`;
+    }
+
+    if (messageElement) {
+        if (totalProducts === 0) {
+            messageElement.textContent =
+                "Aún no hay productos registrados";
         } else {
-            return;
+            messageElement.textContent =
+                `${totalStock} unidades disponibles`;
         }
-        action.addEventListener("click", (event) => { event.preventDefault(); event.stopPropagation(); window.location.href = action.dataset.href; });
-        card.append(action);
+    }
+
+    // Alertas de stock
+    const lowStockCount = dashboard.querySelector(
+        "[data-low-stock-count]"
+    );
+
+    const emptyStockCount = dashboard.querySelector(
+        "[data-empty-stock-count]"
+    );
+
+    if (lowStockCount) {
+        lowStockCount.textContent =
+            `${lowStockProducts} productos`;
+    }
+
+    if (emptyStockCount) {
+        emptyStockCount.textContent =
+            `${emptyCategories} categorías`;
+    }
+
+    // Actualizar cada categoría
+    inventoryCategories.forEach((category) => {
+        const countElement = dashboard.querySelector(
+            `[data-category-count="${category}"]`
+        );
+
+        if (!countElement) return;
+
+        const count = categoryCounts[category];
+
+        if (category === "promociones") {
+            countElement.textContent =
+                `${count} activas`;
+        } else if (category === "preventa") {
+            countElement.textContent =
+                `${count} pedidos`;
+        } else {
+            countElement.textContent =
+                `${count} productos`;
+        }
+    });
+
+    // Mantener el ID de colección al entrar a cada categoría
+    dashboard.querySelectorAll("[data-category-link]").forEach((link) => {
+        const category = link.dataset.categoryLink;
+
+        const href = link.getAttribute("href");
+
+        if (!href) return;
+
+        link.setAttribute(
+            "href",
+            `${href}?collection=${encodeURIComponent(collectionId)}`
+        );
     });
 }
 

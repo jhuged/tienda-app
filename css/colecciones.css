@@ -222,3 +222,49 @@
     }
 
 }
+
+
+/* Acciones de las tarjetas de colecciones */
+.collection-card-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px 12px;
+}
+
+.collection-card-actions button {
+    width: 34px;
+    height: 34px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--color-line);
+    border-radius: 8px;
+    background: var(--color-white);
+    cursor: pointer;
+    padding: 0;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.collection-card-actions button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+}
+
+.collection-card-actions i {
+    font-size: 15px;
+    line-height: 1;
+}
+
+.collection-action-edit i {
+    color: var(--color-gold);
+}
+
+.collection-action-delete i {
+    color: #c0392b;
+}
+
+.collection-card-actions button:active {
+    transform: scale(0.95);
+}
