@@ -7,12 +7,12 @@
     <title>Figuroom - Figuritas</title>
 
     <link rel="stylesheet" href="../css/components.css">
-    <link rel="stylesheet" href="../css/inventario.css">
+    <link rel="stylesheet" href="../css/inventory.css">
+    <link rel="stylesheet" href="../css/category-pages.css">
 </head>
 
 <body>
 
-    <!-- TOPBAR -->
     <div
         data-component="topbar"
         data-title="Figuroom"
@@ -20,10 +20,10 @@
         data-back-href="coleccion-dashboard.html"
     ></div>
 
-    <!-- CONTENIDO -->
     <main class="page-content inventory-page">
 
         <section class="page-header">
+
             <div>
                 <h1>Figuritas</h1>
                 <p>Administra las figuritas de esta colección.</p>
@@ -37,12 +37,9 @@
                 <i class="fi fi-rr-plus"></i>
                 Nueva figurita
             </a>
+
         </section>
 
-        <!--
-            El contenido se genera dinámicamente desde app.js.
-            No colocar productos directamente aquí.
-        -->
         <section
             class="product-grid figure-grid"
             data-inventory-grid
@@ -50,7 +47,6 @@
 
     </main>
 
-    <!-- BOTTOM NAV -->
     <div data-component="bottom-nav"></div>
 
     <script src="../js/components.js"></script>

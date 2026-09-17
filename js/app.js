@@ -207,10 +207,42 @@ function setupGenericForm() {
         }
     }
 
-    form.addEventListener("submit", (event) => {
-        event.preventDefault();
+        form.addEventListener("submit", async (event) => {
 
-        const data = Object.fromEntries(new FormData(form));
+    event.preventDefault();
+
+    const formData = new FormData(form);
+
+    const data = Object.fromEntries(formData);
+
+    const imageInput =
+        form.querySelector("[name='image']");
+
+    const imageFile =
+        imageInput?.files?.[0];
+
+    if (imageFile) {
+
+        data.image = await new Promise((resolve, reject) => {
+
+            const reader = new FileReader();
+
+            reader.onload = () => {
+                resolve(reader.result);
+            };
+
+            reader.onerror = () => {
+                reject(reader.error);
+            };
+
+            reader.readAsDataURL(imageFile);
+        });
+
+    } else {
+
+        data.image =
+            form.dataset.currentImage || "";
+    }
 
         if (form.dataset.form === "collection") {
 
@@ -297,22 +329,147 @@ function setupGenericForm() {
                 );
             }
 
-        } else if (form.dataset.form === "product") {
+            } else if (form.dataset.form === "product") {
 
-            const collectionId = data.collectionId || "COL-001";
-            const inventory = getInventory(collectionId);
-            const category = data.category;
+                const collectionId =
+                    data.collectionId || "COL-001";
 
-            inventory[category].push({
-                id: `PRD-${Date.now()}`,
-                name: data.name,
-                number: data.number || "",
-                type: data.type || "",
-                price: Number(data.price || 0),
-                stock: Number(data.stock || 0)
-            });
+                const inventory =
+                    getInventory(collectionId);
 
-            saveInventory(collectionId, inventory);
+                const category =
+                    data.category || "figuritas";
+
+                const products =
+                    Array.isArray(inventory[category])
+                        ? inventory[category]
+                        : [];
+
+                /*
+                * EDITAR PRODUCTO
+                */
+                if (editId) {
+
+                    const productIndex =
+                        products.findIndex(
+                            (product) => product.id === editId
+                        );
+
+                    if (productIndex === -1) {
+
+                        alert(
+                            "No se encontró la figurita que quieres editar."
+                        );
+
+                        return;
+                    }
+
+                    const existingProduct =
+                        products[productIndex];
+
+                    /*
+                    * Si no se selecciona una imagen nueva,
+                    * conservamos la imagen anterior.
+                    */
+                    const image =
+                        data.image ||
+                        form.dataset.currentImage ||
+                        existingProduct.image ||
+                        "";
+
+                    products[productIndex] = {
+                        ...existingProduct,
+
+                        id: existingProduct.id,
+
+                        collectionId,
+
+                        category,
+
+                        name: data.name,
+
+                        number: data.number || "",
+
+                        type: data.type || "",
+
+                        price: Number(data.price || 0),
+
+                        stock: Number(data.stock || 0),
+
+                        image
+                    };
+
+                    inventory[category] =
+                        products;
+
+                    saveInventory(
+                        collectionId,
+                        inventory
+                    );
+
+                } else {
+
+                    /*
+                    * NUEVA FIGURITA
+                    *
+                    * Generar ID autoincrementable:
+                    * PRD-001
+                    * PRD-002
+                    * PRD-003
+                    */
+                    const highestId =
+                        products.reduce((max, product) => {
+
+                            const match =
+                                String(product.id || "")
+                                    .match(/^PRD-(\d+)$/);
+
+                            if (!match) return max;
+
+                            return Math.max(
+                                max,
+                                Number(match[1])
+                            );
+
+                        }, 0);
+
+                    const productId =
+                        `PRD-${String(
+                            highestId + 1
+                        ).padStart(3, "0")}`;
+
+                    /*
+                    * Guardar nueva figurita
+                    */
+                    products.push({
+
+                        id: productId,
+
+                        collectionId,
+
+                        category,
+
+                        name: data.name,
+
+                        number: data.number || "",
+
+                        type: data.type || "",
+
+                        price: Number(data.price || 0),
+
+                        stock: Number(data.stock || 0),
+
+                        image: data.image || ""
+                    });
+
+                    inventory[category] =
+                        products;
+
+                    saveInventory(
+                        collectionId,
+                        inventory
+                    );
+                }
 
         } else if (form.dataset.form === "bundle") {
 
@@ -659,7 +816,7 @@ function setupSaleForm() {
         );
 
         window.location.href = "ventas.html";
-    });
+        });
 }
 
 function renderCollections() {
@@ -1312,6 +1469,7 @@ function renderCollectionDashboard() {
 
 
 function renderInventoryPage() {
+
     const page = window.location.pathname.split("/").pop();
 
     const categoryByPage = {
@@ -1325,12 +1483,19 @@ function renderInventoryPage() {
     };
 
     const category = categoryByPage[page];
-    const grid = document.querySelector(".product-grid, .preorder-list");
+
+    const grid = document.querySelector(
+        ".product-grid, .preorder-list"
+    );
 
     if (!category || !grid) return;
 
-    const params = new URLSearchParams(window.location.search);
-    const collectionId = params.get("collection") || "COL-001";
+    const params = new URLSearchParams(
+        window.location.search
+    );
+
+    const collectionId =
+        params.get("collection") || "COL-001";
 
     const inventory = getInventory(collectionId);
 
@@ -1341,9 +1506,11 @@ function renderInventoryPage() {
     /*
      * Mantener la colección al crear un producto
      */
-    const newItemLink = document.querySelector("[data-new-item]");
+    const newItemLink =
+        document.querySelector("[data-new-item]");
 
     if (newItemLink) {
+
         const separator = newItemLink.href.includes("?")
             ? "&"
             : "?";
@@ -1356,6 +1523,7 @@ function renderInventoryPage() {
      * INVENTARIO VACÍO
      */
     if (!products.length) {
+
         grid.innerHTML = `
             <div class="sales-empty">
                 <i class="fi fi-rr-box-open"></i>
@@ -1380,110 +1548,124 @@ function renderInventoryPage() {
 
         grid.className = "product-grid figure-grid";
 
-        grid.innerHTML = products.map((product) => `
-            <article
-                class="figure-card"
-                data-product-id="${product.id}"
-            >
+        grid.innerHTML = products.map((product) => {
 
-                <div
-                    class="figure-image"
-                    style="background-image: url('https://images.unsplash.com/photo-1523398002811-999ca8dec234?auto=format&fit=crop&w=500&q=80')"
+            const image = product.image || "";
+
+            return `
+                <article
+                    class="figure-card"
+                    data-product-id="${product.id}"
                 >
-                    <span class="figure-number">
-                        ${product.number || "-"}
-                    </span>
-                </div>
 
-                <div class="figure-info">
+                    <div class="figure-image">
 
-                    <h3>
-                        ${product.name || "Figurita"}
-                    </h3>
+                        ${
+                            image
+                                ? `
+                                    <img
+                                        src="${image}"
+                                        alt="${product.name || "Figurita"}"
+                                    >
+                                `
+                                : `
+                                    <div class="figure-image-empty">
+                                        <i class="fi fi-rr-picture"></i>
+                                    </div>
+                                `
+                        }
 
-                    <span>
-                        Stock:
-                        <strong data-stock>
-                            ${Number(product.stock || 0)}
-                        </strong>
-                    </span>
-
-                    <strong class="figure-price">
-                        S/ ${Number(product.price || 0).toFixed(2)}
-                    </strong>
-
-                    <div class="figure-actions">
-
-                        <button
-                            type="button"
-                            class="edit-stock"
-                            data-product-id="${product.id}"
-                            data-collection-id="${collectionId}"
-                        >
-                            Editar
-                        </button>
-
-                        <button
-                            type="button"
-                            class="sell-product"
-                            data-product-id="${product.id}"
-                            data-collection-id="${collectionId}"
-                        >
-                            Agregar al carrito
-                        </button>
+                        ${
+                            product.number
+                                ? `
+                                    <span class="figure-number">
+                                        ${product.number}
+                                    </span>
+                                `
+                                : ""
+                        }
 
                     </div>
 
-                </div>
+                    <div class="figure-info">
 
-            </article>
-        `).join("");
+                        <h3>
+                            ${product.name || "Figurita"}
+                        </h3>
 
-        /*
-         * EDITAR STOCK
-         */
-        grid.querySelectorAll(".edit-stock").forEach((button) => {
+                        <span>
+                            Nº ${product.number || "-"}
+                            ${
+                                product.type
+                                    ? ` · ${product.type}`
+                                    : ""
+                            }
+                        </span>
 
-            button.addEventListener("click", () => {
+                        <div class="figure-data">
 
-                const productId =
-                    button.dataset.productId;
+                            <span>
+                                Precio
+                                <strong class="figure-price">
+                                    S/ ${Number(
+                                        product.price || 0
+                                    ).toFixed(2)}
+                                </strong>
+                            </span>
 
-                const inventory =
-                    getInventory(collectionId);
+                            <span>
+                                Stock
+                                <strong data-stock>
+                                    ${Number(
+                                        product.stock || 0
+                                    )}
+                                </strong>
+                            </span>
 
-                const product =
-                    inventory.figuritas.find(
-                        (item) => item.id === productId
-                    );
+                        </div>
 
-                if (!product) return;
+                        <div class="figure-actions">
 
-                const newStock = prompt(
-                    `Nuevo stock para "${product.name}":`,
-                    product.stock || 0
-                );
+                            <button
+                                type="button"
+                                class="sell-product"
+                                title="Agregar al carrito"
+                                aria-label="Agregar al carrito"
+                                data-product-id="${product.id}"
+                                data-collection-id="${collectionId}"
+                            >
+                                <i class="fi fi-rr-shopping-cart"></i>
+                            </button>
 
-                if (newStock === null) return;
+                            <button
+                                type="button"
+                                class="edit-product"
+                                title="Editar figurita"
+                                aria-label="Editar figurita"
+                                data-product-id="${product.id}"
+                                data-collection-id="${collectionId}"
+                            >
+                                <i class="fi fi-rr-edit"></i>
+                            </button>
 
-                const stock = Number(newStock);
+                            <button
+                                type="button"
+                                class="delete-product"
+                                title="Eliminar figurita"
+                                aria-label="Eliminar figurita"
+                                data-product-id="${product.id}"
+                                data-collection-id="${collectionId}"
+                            >
+                                <i class="fi fi-rr-trash"></i>
+                            </button>
 
-                if (Number.isNaN(stock) || stock < 0) {
-                    alert("Ingresa una cantidad válida.");
-                    return;
-                }
+                        </div>
 
-                product.stock = stock;
+                    </div>
 
-                saveInventory(
-                    collectionId,
-                    inventory
-                );
-
-                renderInventoryPage();
-            });
-
-        });
+                </article>
+            `;
+        }).join("");
 
         /*
          * AGREGAR FIGURITA AL CARRITO
@@ -1509,7 +1691,11 @@ function renderInventoryPage() {
                     Number(product.stock || 0);
 
                 if (stock <= 0) {
-                    alert("No hay stock disponible.");
+
+                    alert(
+                        "No hay stock disponible."
+                    );
+
                     return;
                 }
 
@@ -1529,6 +1715,7 @@ function renderInventoryPage() {
                     if (
                         Number(existing.quantity || 0) >= stock
                     ) {
+
                         alert(
                             "No puedes agregar más unidades de las disponibles."
                         );
@@ -1549,7 +1736,6 @@ function renderInventoryPage() {
                         price: Number(product.price || 0),
                         quantity: 1
                     });
-
                 }
 
                 saveStored(
@@ -1559,7 +1745,65 @@ function renderInventoryPage() {
 
                 goToCart();
             });
+        });
 
+        /*
+         * EDITAR FIGURITA
+         */
+        grid.querySelectorAll(".edit-product").forEach((button) => {
+
+            button.addEventListener("click", () => {
+
+                const productId =
+                    button.dataset.productId;
+
+                window.location.href =
+                    `nueva-figurita.html?edit=${encodeURIComponent(
+                        productId
+                    )}&collection=${encodeURIComponent(
+                        collectionId
+                    )}`;
+            });
+        });
+
+        /*
+         * ELIMINAR FIGURITA
+         */
+        grid.querySelectorAll(".delete-product").forEach((button) => {
+
+            button.addEventListener("click", () => {
+
+                const productId =
+                    button.dataset.productId;
+
+                const product =
+                    products.find(
+                        (item) => item.id === productId
+                    );
+
+                if (!product) return;
+
+                const confirmed = confirm(
+                    `¿Eliminar la figurita "${product.name || "Figurita"}"?`
+                );
+
+                if (!confirmed) return;
+
+                const updatedProducts =
+                    products.filter(
+                        (item) => item.id !== productId
+                    );
+
+                inventory[category] =
+                    updatedProducts;
+
+                saveInventory(
+                    collectionId,
+                    inventory
+                );
+
+                renderInventoryPage();
+            });
         });
 
         return;
@@ -1586,7 +1830,9 @@ function renderInventoryPage() {
             </span>
 
             <strong>
-                Venta S/ ${Number(product.price || 0).toFixed(2)}
+                Venta S/ ${Number(
+                    product.price || 0
+                ).toFixed(2)}
             </strong>
 
             <button
@@ -1625,7 +1871,11 @@ function renderInventoryPage() {
                 Number(product.stock || 0);
 
             if (stock <= 0) {
-                alert("No hay stock disponible.");
+
+                alert(
+                    "No hay stock disponible."
+                );
+
                 return;
             }
 
@@ -1645,6 +1895,7 @@ function renderInventoryPage() {
                 if (
                     Number(existing.quantity || 0) >= stock
                 ) {
+
                     alert(
                         "No puedes agregar más unidades de las disponibles."
                     );
@@ -1665,7 +1916,6 @@ function renderInventoryPage() {
                     price: Number(product.price || 0),
                     quantity: 1
                 });
-
             }
 
             saveStored(
@@ -1675,7 +1925,6 @@ function renderInventoryPage() {
 
             goToCart();
         });
-
     });
 }
 
