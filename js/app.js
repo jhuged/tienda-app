@@ -698,6 +698,109 @@ function renderSales() {
         .join("");
 }
 
+
+function renderSaleDetail() {
+const clientElement = document.querySelector("[data-sale-client]");
+if (!clientElement) return;
+
+
+const params = new URLSearchParams(window.location.search);
+const saleId = params.get("id");
+
+const sales = getStored("figuroom-sales", []);
+const sale = sales.find((item) => item.id === saleId);
+
+if (!sale) {
+    clientElement.textContent = "Venta no encontrada";
+
+    document.querySelector("[data-sale-date]").textContent = "—";
+    document.querySelector("[data-sale-product-count]").textContent = "0 productos";
+    document.querySelector("[data-sale-products]").innerHTML = `
+        <div class="product-row">
+            <div>
+                <strong>No se encontró la venta</strong>
+                <small>Regresa a ventas e intenta nuevamente.</small>
+            </div>
+        </div>
+    `;
+
+    document.querySelector("[data-sale-total]").textContent = "S/ 0.00";
+    document.querySelector("[data-sale-paid]").textContent = "S/ 0.00";
+    document.querySelector("[data-sale-debt]").textContent = "S/ 0.00";
+
+    return;
+}
+
+const clients = getClients();
+const client = clients.find((item) => item.id === sale.client);
+
+const total = Number(sale.total || 0);
+const paid = Number(sale.paid || 0);
+const debt = Number(
+    sale.debt ?? Math.max(total - paid, 0)
+);
+
+
+const dateElement = document.querySelector("[data-sale-date]");
+const totalElement = document.querySelector("[data-sale-total]");
+const paidElement = document.querySelector("[data-sale-paid]");
+const debtElement = document.querySelector("[data-sale-debt]");
+const statusElement = document.querySelector("[data-sale-status]");
+const productsElement = document.querySelector("[data-sale-products]");
+const productCountElement = document.querySelector("[data-sale-product-count]");
+
+clientElement.textContent = client?.name || sale.client || "Sin cliente";
+dateElement.textContent = sale.date || "—";
+
+totalElement.textContent = `S/ ${total.toFixed(2)}`;
+paidElement.textContent = `S/ ${paid.toFixed(2)}`;
+debtElement.textContent = `S/ ${debt.toFixed(2)}`;
+
+const products = Array.isArray(sale.products)
+    ? sale.products
+    : [];
+
+productCountElement.textContent =
+    `${products.length} ${products.length === 1 ? "producto" : "productos"}`;
+
+if (!products.length) {
+    productsElement.innerHTML = `
+        <div class="product-row">
+            <div>
+                <strong>Sin productos</strong>
+                <small>No hay productos registrados en esta venta.</small>
+            </div>
+        </div>
+    `;
+} else {
+    productsElement.innerHTML = products.map((product) => {
+        const price = Number(product.price || 0);
+
+        return `
+            <div class="product-row">
+                <div>
+                    <strong>${product.name || "Producto"}</strong>
+                    <small>1 × S/ ${price.toFixed(2)}</small>
+                </div>
+
+                <strong>S/ ${price.toFixed(2)}</strong>
+            </div>
+        `;
+    }).join("");
+}
+
+if (debt <= 0) {
+    statusElement.textContent = "Pagado";
+} else if (paid > 0) {
+    statusElement.textContent = "Pago pendiente";
+} else {
+    statusElement.textContent = "Pago pendiente";
+}
+
+
+}
+
+
 function renderHomeIncome() {
     const income = getStored("figuroom-income", []);
     const received = income.filter((item) => item.type === "Ingreso").reduce((sum, item) => sum + Number(item.amount || 0), 0);
@@ -1268,6 +1371,7 @@ renderSaleDetail();
 renderHomeCollections();
 renderClients();
 renderSales();
+renderSaleDetail();
 renderHomeIncome();
 renderCollectionDashboard();
 renderInventoryPage();

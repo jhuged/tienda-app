@@ -1,184 +1,106 @@
 <!DOCTYPE html>
-<html lang="es">
 
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Detalle de venta - Figuroom</title>
 
-    <link rel="stylesheet" href="../css/components.css">
-    <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/4.0.0/uicons-regular-rounded/css/uicons-regular-rounded.css">
-    <link rel="stylesheet" href="../css/venta-detalle.css">
+<title>Figuroom - Detalle de venta</title>
+
+<link rel="stylesheet" href="../css/components.css">
+<link rel="stylesheet" href="../css/venta-detalle.css">
+
+
 </head>
 
 <body>
 
-    <!-- BARRA SUPERIOR -->
 
-    <div id="topbar" data-title="Detalle de venta" data-subtitle="Información de la compra" data-back-href="ventas.html"></div>
+<div
+    data-component="topbar"
+    data-title="Detalle de venta"
+    data-subtitle="Información de la compra"
+    data-back-href="ventas.html"
+></div>
 
+<main class="main-content">
 
-    <!-- CONTENIDO -->
+    <!-- CABECERA DE LA VENTA -->
+    <section class="sale-header">
 
-    <main class="main-content">
-
-        <!-- CLIENTE Y FECHA -->
-
-        <section class="sale-header">
-
-            <div>
-                <span>Cliente</span>
-
-                <strong>
-                    Juan Pérez
-                </strong>
-            </div>
-
-            <div class="sale-date">
-                <span>Fecha</span>
-
-                <strong>
-                    16/09/2026
-                </strong>
-            </div>
-
-        </section>
-
-
-        <!-- PRODUCTOS -->
-
-        <section class="detail-section">
-
-            <div class="section-heading">
-
-                <h2>Productos</h2>
-
-                <span>3 productos</span>
-
-            </div>
-
-
-            <div class="product-row">
-
-                <div>
-                    <strong>
-                        Álbum Mundial 2026
-                    </strong>
-
-                    <small>
-                        1 × S/ 20.00
-                    </small>
-                </div>
-
-                <strong>
-                    S/ 20.00
-                </strong>
-
-            </div>
-
-
-            <div class="product-row">
-
-                <div>
-                    <strong>
-                        Figuritas Panini
-                    </strong>
-
-                    <small>
-                        10 × S/ 1.00
-                    </small>
-                </div>
-
-                <strong>
-                    S/ 10.00
-                </strong>
-
-            </div>
-
-
-            <div class="product-row">
-
-                <div>
-                    <strong>
-                        Escudo
-                    </strong>
-
-                    <small>
-                        1 × S/ 10.00
-                    </small>
-                </div>
-
-                <strong>
-                    S/ 10.00
-                </strong>
-
-            </div>
-
-        </section>
-
-
-        <!-- RESUMEN DEL PAGO -->
-
-        <section class="payment-section">
-
-            <div class="payment-row">
-
-                <span>Total</span>
-
-                <strong>
-                    S/ 40.00
-                </strong>
-
-            </div>
-
-
-            <div class="payment-row">
-
-                <span>Pagó</span>
-
-                <strong class="paid">
-                    S/ 30.00
-                </strong>
-
-            </div>
-
-
-            <div class="payment-row">
-
-                <span>Debe</span>
-
-                <strong class="due">
-                    S/ 10.00
-                </strong>
-
-            </div>
-
-        </section>
-
-
-        <!-- ESTADO -->
-
-        <div class="status-badge">
-            Pago pendiente
+        <div>
+            <span>Cliente</span>
+            <strong data-sale-client>—</strong>
         </div>
 
+        <div class="sale-date">
+            <span>Fecha</span>
+            <strong data-sale-date>—</strong>
+        </div>
 
-        <!-- BOTONES -->
-
-        <button class="primary-button payment-button">
-            <i class="fi fi-rr-check-circle"></i> Pago
-        </button>
-
-    </main>
+    </section>
 
 
-    <!-- BARRA INFERIOR -->
+    <!-- PRODUCTOS -->
+    <section class="detail-section">
 
-    <div id="bottom-nav"></div>
+        <div class="section-heading">
+            <h2>Productos</h2>
+            <span data-sale-product-count>0 productos</span>
+        </div>
 
-    <script src="../js/components.js"></script>
+        <div data-sale-products></div>
+
+    </section>
+
+
+    <!-- PAGOS -->
+    <section class="payment-section">
+
+        <div class="payment-row">
+            <span>Total</span>
+            <strong data-sale-total>S/ 0.00</strong>
+        </div>
+
+        <div class="payment-row">
+            <span>Pago:</span>
+            <strong class="paid" data-sale-paid>S/ 0.00</strong>
+        </div>
+
+        <div class="payment-row">
+            <span>Deuda:</span>
+            <strong class="due" data-sale-debt>S/ 0.00</strong>
+        </div>
+
+    </section>
+
+
+    <!-- ESTADO -->
+    <div
+        class="status-badge"
+        data-sale-status
+    >
+        Pago pendiente
+    </div>
+
+
+    <!-- AÑADIR PAGO -->
+    <button
+        type="button"
+        class="primary-button payment-button"
+        data-add-payment
+    >
+        <i class="fi fi-rr-plus"></i>
+        Añadir pago
+    </button>
+
+</main>
+
+
+<div data-component="bottom-nav"></div>
+<script src="../js/components.js"></script>
+<script src="../js/app.js"></script>
 
 </body>
-
 </html>
