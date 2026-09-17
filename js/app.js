@@ -1682,31 +1682,640 @@ function renderInventoryPage() {
 
 function setupCartPage() {
     const clientSelect = document.querySelector("#cart-client");
+    const productSearch = document.querySelector("#cart-product-search");
+    const productResults = document.querySelector("#cart-product-results");
     const cartLines = document.querySelector("#cart-lines");
+    const cartTotal = document.querySelector("#cart-total");
     const confirm = document.querySelector("#confirm-cart");
-    if (!clientSelect || !cartLines || !confirm) return;
-    const cart = getStored("figuroom-cart", []);
-    getClients().forEach((client) => clientSelect.add(new Option(`${client.name} · ${client.id}`, client.id)));
-        cart.forEach((product, index) => { const row = document.createElement("div"); row.className = "sale-line"; row.innerHTML = `<span>${product.name} x${product.quantity || 1}</span><input data-cart-price data-index="${index}" type="number" min="0" step="0.01" value="${Number(product.price || 0).toFixed(2)}" aria-label="Precio de ${product.name}"><strong data-line-total>S/ ${(Number(product.price) * Number(product.quantity || 1)).toFixed(2)}</strong>`; cartLines.append(row); });
-        const updateCartTotal = () => { const current = [...cartLines.querySelectorAll("[data-cart-price]")].reduce((sum, input) => sum + Number(input.value || 0) * Number(cart[input.dataset.index].quantity || 1), 0); const totalElement = document.querySelector("#cart-total"); if (totalElement) totalElement.textContent = `S/ ${current.toFixed(2)}`; return current; };
-        cartLines.querySelectorAll("[data-cart-price]").forEach((input) => input.addEventListener("input", () => { cart[input.dataset.index].price = Number(input.value || 0); saveStored("figuroom-cart", cart); input.nextElementSibling.textContent = `S/ ${(Number(input.value || 0) * Number(cart[input.dataset.index].quantity || 1)).toFixed(2)}`; updateCartTotal(); }));
-    updateCartTotal();
-    confirm.addEventListener("click", () => {
-        if (!clientSelect.value || !cart.length) return;
-        cart.forEach((product) => {
-            if (!product.collectionId || !product.category) return;
-            const inventory = getInventory(product.collectionId);
-            const item = inventory[product.category].find((entry) => entry.id === product.productId || entry.name === product.name);
-            if (item) item.stock = Math.max(0, Number(item.stock || 0) - Number(product.quantity || 1));
-            saveInventory(product.collectionId, inventory);
-        });
-        const sales = getStored("figuroom-sales", []);
-        const confirmedTotal = cart.reduce((sum, product) => sum + Number(product.price || 0) * Number(product.quantity || 1), 0);
-        sales.push({ id: `VEN-${Date.now()}`, client: clientSelect.value, products: cart, total: confirmedTotal, date: new Date().toLocaleDateString("es-PE") });
-        saveStored("figuroom-sales", sales);
-        localStorage.removeItem("figuroom-cart");
-        window.location.href = "ventas.html";
+
+    if (
+        !clientSelect ||
+        !productSearch ||
+        !productResults ||
+        !cartLines ||
+        !cartTotal ||
+        !confirm
+    ) {
+        return;
+    }
+
+    let cart = getStored("figuroom-cart", []);
+
+    // =========================
+    // CLIENTES
+    // =========================
+
+    getClients().forEach((client) => {
+        const option = document.createElement("option");
+
+        option.value = client.id;
+        option.textContent = `${client.name} · ${client.id}`;
+
+        clientSelect.appendChild(option);
     });
+
+
+    // =========================
+    // OBTENER PRODUCTOS
+    // =========================
+
+    function getInventoryProducts() {
+        const products = [];
+
+        getCollections().forEach((collection) => {
+            const inventory = getInventory(collection.id);
+
+            inventoryCategories.forEach((category) => {
+                const categoryProducts = Array.isArray(
+                    inventory[category]
+                )
+                    ? inventory[category]
+                    : [];
+
+                categoryProducts.forEach((product) => {
+                    const stock = Number(product.stock || 0);
+
+                    if (stock <= 0) {
+                        return;
+                    }
+
+                    products.push({
+                        ...product,
+                        collectionId: collection.id,
+                        collectionName: collection.name,
+                        category
+                    });
+                });
+            });
+        });
+
+        return products;
+    }
+
+
+    // =========================
+    // GUARDAR CARRITO
+    // =========================
+
+    function saveCart() {
+        saveStored("figuroom-cart", cart);
+    }
+
+
+    // =========================
+    // TOTAL
+    // =========================
+
+    function updateCartTotal() {
+        const total = cart.reduce((sum, product) => {
+            return (
+                sum +
+                Number(product.price || 0) *
+                    Number(product.quantity || 1)
+            );
+        }, 0);
+
+        cartTotal.textContent = `S/ ${total.toFixed(2)}`;
+
+        return total;
+    }
+
+
+    // =========================
+    // RENDER CARRITO
+    // =========================
+
+    function renderCart() {
+        cartLines.innerHTML = `
+            <div class="card-label">
+                Productos añadidos
+            </div>
+        `;
+
+        if (!cart.length) {
+            const empty = document.createElement("div");
+
+            empty.className = "empty-state";
+
+            empty.textContent =
+                "No hay productos añadidos al carrito.";
+
+            cartLines.appendChild(empty);
+
+            updateCartTotal();
+
+            return;
+        }
+
+        cart.forEach((product, index) => {
+            const row = document.createElement("div");
+
+            row.className = "sale-line";
+
+            const quantity = Number(
+                product.quantity || 1
+            );
+
+            const price = Number(
+                product.price || 0
+            );
+
+            const lineTotal =
+                price * quantity;
+
+            row.innerHTML = `
+                <span>
+                    ${product.name}
+
+                    <small>
+                        ${product.collectionName || ""}
+                        ·
+                        ${product.category || ""}
+                        ·
+                        x${quantity}
+                    </small>
+                </span>
+
+                <input
+                    data-cart-price
+                    data-index="${index}"
+                    type="number"
+                    min="0"
+                    step="0.01"
+                    value="${price.toFixed(2)}"
+                    aria-label="Precio de ${product.name}"
+                >
+
+                <strong data-line-total>
+                    S/ ${lineTotal.toFixed(2)}
+                </strong>
+
+                <button
+                    type="button"
+                    class="remove-line"
+                    data-remove-cart="${index}"
+                    aria-label="Quitar producto"
+                >
+                    ×
+                </button>
+            `;
+
+            cartLines.appendChild(row);
+        });
+
+
+        // =========================
+        // CAMBIAR PRECIO
+        // =========================
+
+        cartLines
+            .querySelectorAll("[data-cart-price]")
+            .forEach((input) => {
+                input.addEventListener("input", () => {
+                    const index =
+                        Number(input.dataset.index);
+
+                    const product =
+                        cart[index];
+
+                    if (!product) {
+                        return;
+                    }
+
+                    product.price =
+                        Number(input.value || 0);
+
+                    const lineTotal =
+                        Number(input.value || 0) *
+                        Number(product.quantity || 1);
+
+                    const totalElement =
+                        input.parentElement.querySelector(
+                            "[data-line-total]"
+                        );
+
+                    if (totalElement) {
+                        totalElement.textContent =
+                            `S/ ${lineTotal.toFixed(2)}`;
+                    }
+
+                    saveCart();
+
+                    updateCartTotal();
+                });
+            });
+
+
+        // =========================
+        // QUITAR PRODUCTO
+        // =========================
+
+        cartLines
+            .querySelectorAll("[data-remove-cart]")
+            .forEach((button) => {
+                button.addEventListener("click", () => {
+                    const index =
+                        Number(
+                            button.dataset.removeCart
+                        );
+
+                    cart.splice(index, 1);
+
+                    saveCart();
+
+                    renderCart();
+                });
+            });
+
+
+        updateCartTotal();
+    }
+
+
+    // =========================
+    // AGREGAR PRODUCTO
+    // =========================
+
+    function addProduct(product) {
+        const availableStock =
+            Number(product.stock || 0);
+
+        const existing =
+            cart.find((item) => {
+                return (
+                    String(item.productId) ===
+                        String(product.id) &&
+                    String(item.collectionId) ===
+                        String(product.collectionId) &&
+                    String(item.category) ===
+                        String(product.category)
+                );
+            });
+
+
+        if (existing) {
+            const currentQuantity =
+                Number(existing.quantity || 1);
+
+            if (
+                currentQuantity >=
+                availableStock
+            ) {
+                alert(
+                    "No hay más stock disponible."
+                );
+
+                return;
+            }
+
+            existing.quantity =
+                currentQuantity + 1;
+        } else {
+            cart.push({
+                productId: product.id,
+                name: product.name,
+                collectionId:
+                    product.collectionId,
+                collectionName:
+                    product.collectionName,
+                category:
+                    product.category,
+                price:
+                    Number(product.price || 0),
+                quantity: 1
+            });
+        }
+
+        saveCart();
+
+        renderCart();
+
+        productSearch.value = "";
+
+        productResults.innerHTML = "";
+
+        productResults.hidden = true;
+    }
+
+
+    // =========================
+    // BUSCAR PRODUCTOS
+    // =========================
+
+    productSearch.addEventListener(
+        "input",
+        () => {
+            const query =
+                productSearch.value
+                    .toLowerCase()
+                    .trim();
+
+            productResults.innerHTML = "";
+
+            if (!query) {
+                productResults.hidden = true;
+
+                return;
+            }
+
+            const products =
+                getInventoryProducts();
+
+            const matches =
+                products.filter((product) => {
+                    const productName =
+                        String(
+                            product.name || ""
+                        ).toLowerCase();
+
+                    const collectionName =
+                        String(
+                            product.collectionName ||
+                                ""
+                        ).toLowerCase();
+
+                    const category =
+                        String(
+                            product.category || ""
+                        ).toLowerCase();
+
+                    return (
+                        productName.includes(
+                            query
+                        ) ||
+                        collectionName.includes(
+                            query
+                        ) ||
+                        category.includes(
+                            query
+                        )
+                    );
+                });
+
+
+            matches.forEach((product) => {
+                const option =
+                    document.createElement(
+                        "button"
+                    );
+
+                option.type = "button";
+
+                option.className =
+                    "search-result";
+
+                option.innerHTML = `
+                    <span>
+                        ${product.name}
+                    </span>
+
+                    <small>
+                        ${product.collectionName}
+                        ·
+                        ${product.category}
+                        ·
+                        S/ ${Number(
+                            product.price || 0
+                        ).toFixed(2)}
+                    </small>
+                `;
+
+                option.addEventListener(
+                    "click",
+                    () => {
+                        addProduct(product);
+                    }
+                );
+
+                productResults.appendChild(
+                    option
+                );
+            });
+
+            productResults.hidden =
+                productResults
+                    .childElementCount === 0;
+        }
+    );
+
+
+    // =========================
+    // CONFIRMAR VENTA
+    // =========================
+
+    confirm.addEventListener(
+        "click",
+        () => {
+            if (!clientSelect.value) {
+                alert(
+                    "Selecciona un cliente."
+                );
+
+                return;
+            }
+
+            if (!cart.length) {
+                alert(
+                    "Agrega al menos un producto al carrito."
+                );
+
+                return;
+            }
+
+
+            // =========================
+            // VALIDAR STOCK
+            // ANTES DE DESCONTAR
+            // =========================
+
+            const inventoryChanges = [];
+
+            for (const product of cart) {
+                if (
+                    !product.collectionId ||
+                    !product.category
+                ) {
+                    continue;
+                }
+
+                const inventory =
+                    getInventory(
+                        product.collectionId
+                    );
+
+                const categoryProducts =
+                    Array.isArray(
+                        inventory[
+                            product.category
+                        ]
+                    )
+                        ? inventory[
+                              product.category
+                          ]
+                        : [];
+
+                const item =
+                    categoryProducts.find(
+                        (entry) =>
+                            String(
+                                entry.id
+                            ) ===
+                                String(
+                                    product.productId
+                                ) ||
+                            String(
+                                entry.name
+                            ) ===
+                                String(
+                                    product.name
+                                )
+                    );
+
+                if (!item) {
+                    alert(
+                        `No se encontró ${product.name} en el inventario.`
+                    );
+
+                    return;
+                }
+
+                const quantity =
+                    Number(
+                        product.quantity || 1
+                    );
+
+                const stock =
+                    Number(
+                        item.stock || 0
+                    );
+
+                if (quantity > stock) {
+                    alert(
+                        `No hay stock suficiente para ${product.name}.`
+                    );
+
+                    return;
+                }
+
+                inventoryChanges.push({
+                    collectionId:
+                        product.collectionId,
+                    category:
+                        product.category,
+                    item,
+                    quantity
+                });
+            }
+
+
+            // =========================
+            // DESCONTAR STOCK
+            // =========================
+
+            inventoryChanges.forEach(
+                (change) => {
+                    change.item.stock =
+                        Math.max(
+                            0,
+                            Number(
+                                change.item
+                                    .stock || 0
+                            ) -
+                                change.quantity
+                        );
+
+                    saveInventory(
+                        change.collectionId,
+                        getInventory(
+                            change.collectionId
+                        )
+                    );
+                }
+            );
+
+
+            // =========================
+            // TOTAL
+            // =========================
+
+            const confirmedTotal =
+                cart.reduce(
+                    (sum, product) => {
+                        return (
+                            sum +
+                            Number(
+                                product.price ||
+                                    0
+                            ) *
+                                Number(
+                                    product.quantity ||
+                                        1
+                                )
+                        );
+                    },
+                    0
+                );
+
+
+            // =========================
+            // GUARDAR VENTA
+            // =========================
+
+            const sales =
+                getStored(
+                    "figuroom-sales",
+                    []
+                );
+
+            const sale = {
+                id: `VEN-${Date.now()}`,
+                client:
+                    clientSelect.value,
+                products: cart,
+                total:
+                    confirmedTotal,
+                paid: 0,
+                debt:
+                    confirmedTotal,
+                payments: [],
+                date:
+                    new Date().toLocaleDateString(
+                        "es-PE"
+                    )
+            };
+
+            sales.push(sale);
+
+            saveStored(
+                "figuroom-sales",
+                sales
+            );
+
+
+            // =========================
+            // LIMPIAR CARRITO
+            // =========================
+
+            localStorage.removeItem(
+                "figuroom-cart"
+            );
+
+
+            // =========================
+            // IR A VENTAS
+            // =========================
+
+            window.location.href =
+                "ventas.html";
+        }
+    );
+
+
+    // =========================
+    // INICIALIZAR
+    // =========================
+
+    renderCart();
 }
 
 function setupFigureCards() {
