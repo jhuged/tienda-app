@@ -803,22 +803,24 @@ if (debt <= 0) {
 
 function setupSalePayment() {
     const button = document.querySelector("[data-add-payment]");
-    if (!button) return;
+    const modal = document.querySelector("[data-payment-modal]");
 
-    button.addEventListener("click", () => {
+    if (!button || !modal) return;
+
+    const amountInput = modal.querySelector("[data-payment-amount]");
+    const modalDebt = modal.querySelector("[data-modal-debt]");
+    const errorElement = modal.querySelector("[data-payment-error]");
+    const confirmButton = modal.querySelector("[data-confirm-payment]");
+    const closeButtons = modal.querySelectorAll("[data-close-payment-modal]");
+
+    const openModal = () => {
         const params = new URLSearchParams(window.location.search);
         const saleId = params.get("id");
-
-        if (!saleId) {
-            alert("No se encontró la venta.");
-            return;
-        }
 
         const sales = getStored("figuroom-sales", []);
         const sale = sales.find((item) => item.id === saleId);
 
         if (!sale) {
-            alert("No se encontró la venta.");
             return;
         }
 
@@ -829,29 +831,68 @@ function setupSalePayment() {
         );
 
         if (debt <= 0) {
-            alert("Esta venta ya está pagada.");
             return;
         }
 
-        const input = window.prompt(
-            `Deuda actual: S/ ${debt.toFixed(2)}\n\n¿Cuánto paga el cliente?`
+        modalDebt.textContent = `S/ ${debt.toFixed(2)}`;
+        amountInput.value = "";
+        errorElement.textContent = "";
+
+        modal.classList.add("is-open");
+        modal.setAttribute("aria-hidden", "false");
+
+        setTimeout(() => {
+            amountInput.focus();
+        }, 100);
+    };
+
+    const closeModal = () => {
+        modal.classList.remove("is-open");
+        modal.setAttribute("aria-hidden", "true");
+
+        amountInput.value = "";
+        errorElement.textContent = "";
+    };
+
+    button.addEventListener("click", openModal);
+
+    closeButtons.forEach((element) => {
+        element.addEventListener("click", closeModal);
+    });
+
+    confirmButton.addEventListener("click", () => {
+        const params = new URLSearchParams(window.location.search);
+        const saleId = params.get("id");
+
+        const sales = getStored("figuroom-sales", []);
+        const sale = sales.find((item) => item.id === saleId);
+
+        if (!sale) {
+            errorElement.textContent = "No se encontró la venta.";
+            return;
+        }
+
+        const total = Number(sale.total || 0);
+        const paid = Number(sale.paid || 0);
+        const debt = Number(
+            sale.debt ?? Math.max(total - paid, 0)
         );
 
-        if (input === null) {
-            return;
-        }
-
-        const amount = Number(input.replace(",", "."));
+        const amount = Number(
+            String(amountInput.value).replace(",", ".")
+        );
 
         if (!Number.isFinite(amount) || amount <= 0) {
-            alert("Ingresa un monto válido.");
+            errorElement.textContent =
+                "Ingresa un monto válido.";
+            amountInput.focus();
             return;
         }
 
         if (amount > debt) {
-            alert(
-                `El pago no puede ser mayor que la deuda de S/ ${debt.toFixed(2)}.`
-            );
+            errorElement.textContent =
+                `El pago no puede superar la deuda de S/ ${debt.toFixed(2)}.`;
+            amountInput.focus();
             return;
         }
 
@@ -872,13 +913,20 @@ function setupSalePayment() {
 
         saveStored("figuroom-sales", sales);
 
-        renderSaleDetail();
+        closeModal();
 
-        alert(
-            newDebt <= 0
-                ? "Venta pagada completamente."
-                : `Pago registrado: S/ ${amount.toFixed(2)}`
-        );
+        renderSaleDetail();
+    });
+
+    amountInput.addEventListener("keydown", (event) => {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            confirmButton.click();
+        }
+
+        if (event.key === "Escape") {
+            closeModal();
+        }
     });
 }
 

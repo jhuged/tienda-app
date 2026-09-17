@@ -1,21 +1,16 @@
 <!DOCTYPE html>
-
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <title>Figuroom - Detalle de venta</title>
 
-<title>Figuroom - Detalle de venta</title>
-
-<link rel="stylesheet" href="../css/components.css">
-<link rel="stylesheet" href="../css/venta-detalle.css">
-
-
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="../css/venta-detalle.css">
 </head>
 
 <body>
-
 
 <div
     data-component="topbar"
@@ -24,7 +19,18 @@
     data-back-href="ventas.html"
 ></div>
 
+
 <main class="main-content">
+
+    <!-- REGRESAR -->
+    <a
+        href="ventas.html"
+        class="sale-back-button"
+    >
+        <i class="fi fi-rr-angle-left"></i>
+        <span>Volver a ventas</span>
+    </a>
+
 
     <!-- CABECERA DE LA VENTA -->
     <section class="sale-header">
@@ -98,7 +104,114 @@
 </main>
 
 
+<!-- MODAL AÑADIR PAGO -->
+<div
+    class="payment-modal"
+    data-payment-modal
+    aria-hidden="true"
+>
+
+    <div
+        class="payment-modal-overlay"
+        data-close-payment-modal
+    ></div>
+
+    <div
+        class="payment-modal-card"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="payment-modal-title"
+    >
+
+        <div class="payment-modal-header">
+
+            <div>
+                <span class="payment-modal-label">
+                    Registrar pago
+                </span>
+
+                <h2 id="payment-modal-title">
+                    Añadir pago
+                </h2>
+            </div>
+
+            <button
+                type="button"
+                class="payment-modal-close"
+                data-close-payment-modal
+                aria-label="Cerrar"
+            >
+                <i class="fi fi-rr-cross-small"></i>
+            </button>
+
+        </div>
+
+
+        <div class="payment-modal-debt">
+
+            <span>Deuda actual</span>
+
+            <strong data-modal-debt>
+                S/ 0.00
+            </strong>
+
+        </div>
+
+
+        <div class="payment-modal-field">
+
+            <label for="payment-amount">
+                Monto del pago
+            </label>
+
+            <div class="payment-input-wrapper">
+
+                <span>S/</span>
+
+                <input
+                    type="number"
+                    id="payment-amount"
+                    data-payment-amount
+                    min="0.01"
+                    step="0.01"
+                    inputmode="decimal"
+                    placeholder="0.00"
+                >
+
+            </div>
+
+            <small data-payment-error></small>
+
+        </div>
+
+
+        <div class="payment-modal-actions">
+
+            <button
+                type="button"
+                class="payment-modal-cancel"
+                data-close-payment-modal
+            >
+                Cancelar
+            </button>
+
+            <button
+                type="button"
+                class="payment-modal-confirm"
+                data-confirm-payment
+            >
+                Registrar pago
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
 <div data-component="bottom-nav"></div>
+
 <script src="../js/components.js"></script>
 <script src="../js/app.js"></script>
 
