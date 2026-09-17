@@ -488,8 +488,32 @@ function setupSaleForm() {
 
     form.addEventListener("submit", (event) => {
         event.preventDefault();
-            const sale = { id: `VEN-${Date.now()}`, client: clientSelect.value, products: [...lines.children].filter((line) => line.dataset.product).map((line) => ({ name: line.dataset.product, price: Number(line.querySelector("[data-price]").value) })), total: Number(total.textContent.replace("S/ ", "")), date: new Date().toLocaleDateString("es-PE") };
-            saveStored("figuroom-sales", [...getStored("figuroom-sales", []), sale]);
+            const sale = {
+                id: `VEN-${Date.now()}`,
+                client: clientSelect.value,
+                products: [...lines.children]
+                    .filter((line) => line.dataset.product)
+                    .map((line) => ({
+                        name: line.dataset.product,
+                        price: Number(
+                            line.querySelector("[data-price]").value
+                        )
+                    })),
+                total: Number(
+                    total.textContent.replace("S/ ", "")
+                ),
+                paid: 0,
+                debt: Number(
+                    total.textContent.replace("S/ ", "")
+                ),
+                payments: [],
+                date: new Date().toLocaleDateString("es-PE")
+            };
+
+            saveStored(
+                "figuroom-sales",
+                [...getStored("figuroom-sales", []), sale]
+            );
         window.location.href = "ventas.html";
     });
 }
@@ -586,19 +610,92 @@ function renderClients() {
 }
 
 function renderSales() {
+
     const list = document.querySelector("[data-sales-list]");
+
     if (!list) return;
+
     const sales = getStored("figuroom-sales", []);
-    const total = sales.reduce((sum, sale) => sum + Number(sale.total || 0), 0);
-    document.querySelectorAll("[data-home-sales-total]").forEach((element) => { element.textContent = `S/ ${total.toFixed(2)}`; });
-    if (!sales.length) return;
+
+    const total = sales.reduce(
+        (sum, sale) => sum + Number(sale.total || 0),
+        0
+    );
+
+    document.querySelectorAll("[data-home-sales-total]").forEach((element) => {
+        element.textContent = `S/ ${total.toFixed(2)}`;
+    });
+
+    document.querySelectorAll("[data-sales-total]").forEach((element) => {
+        element.textContent = `S/ ${total.toFixed(2)}`;
+    });
+
+    document.querySelectorAll("[data-sales-count]").forEach((element) => {
+        element.textContent = `${sales.length} ventas`;
+    });
+
+    if (!sales.length) {
+        return;
+    }
+
     const clients = getClients();
-    list.innerHTML = sales.slice().reverse().map((sale) => {
-        const client = clients.find((item) => item.id === sale.client);
-        return `<a href="venta-detalle.html?id=${sale.id}" class="sale-card"><div class="sale-main"><strong>${client?.name || sale.client}</strong><span>${sale.date}</span></div><div class="sale-money"><strong>S/ ${Number(sale.total).toFixed(2)}</strong><span class="sale-due">Venta registrada</span></div><span class="sale-arrow"><i class="fi fi-rr-angle-right"></i></span></a>`;
-    }).join("");
-    document.querySelectorAll("[data-sales-total]").forEach((element) => { element.textContent = `S/ ${total.toFixed(2)}`; });
-    document.querySelectorAll("[data-sales-count]").forEach((element) => { element.textContent = `${sales.length} ventas`; });
+
+    list.innerHTML = sales
+        .slice()
+        .reverse()
+        .map((sale) => {
+
+            const client = clients.find(
+                (item) => item.id === sale.client
+            );
+
+            const saleTotal = Number(sale.total || 0);
+            const paid = Number(sale.paid || 0);
+            const debt = Number(
+                sale.debt ?? Math.max(saleTotal - paid, 0)
+            );
+
+            let paymentStatus = "Pago pendiente";
+
+            if (debt <= 0) {
+                paymentStatus = "Pagado";
+            } else if (paid > 0) {
+                paymentStatus = `Deuda S/ ${debt.toFixed(2)}`;
+            }
+
+            return `
+                <a
+                    href="venta-detalle.html?id=${sale.id}"
+                    class="sale-card"
+                >
+                    <div class="sale-main">
+                        <strong>
+                            ${client?.name || sale.client}
+                        </strong>
+
+                        <span>
+                            ${sale.date}
+                        </span>
+                    </div>
+
+                    <div class="sale-money">
+                        <strong>
+                            S/ ${saleTotal.toFixed(2)}
+                        </strong>
+
+                        <span class="sale-due">
+                            ${paymentStatus}
+                        </span>
+                    </div>
+
+                    <span class="sale-arrow">
+                        <i class="fi fi-rr-angle-right"></i>
+                    </span>
+                </a>
+            `;
+
+        })
+        .join("");
 }
 
 function renderHomeIncome() {
@@ -836,8 +933,10 @@ function renderCollectionDashboard() {
     });
 }
 
+
 function renderInventoryPage() {
     const page = window.location.pathname.split("/").pop();
+
     const categoryByPage = {
         "inventario-figuritas.html": "figuritas",
         "inventario-sobres.html": "sobres",
@@ -847,23 +946,197 @@ function renderInventoryPage() {
         "inventario-promociones.html": "promociones",
         "preventa.html": "preventa"
     };
+
     const category = categoryByPage[page];
     const grid = document.querySelector(".product-grid, .preorder-list");
+
     if (!category || !grid) return;
-    const collectionId = new URLSearchParams(window.location.search).get("collection") || "COL-001";
-    const inventory = JSON.parse(localStorage.getItem(`figuroom-inventory-${collectionId}`) || "{}");
-    const products = Array.isArray(inventory[category]) ? inventory[category] : [];
+
+    const params = new URLSearchParams(window.location.search);
+    const collectionId = params.get("collection") || "COL-001";
+
+    const inventory = getInventory(collectionId);
+    const products = Array.isArray(inventory[category])
+        ? inventory[category]
+        : [];
+
+    /*
+     * Mantener la colección en los enlaces de esta página.
+     */
+    const newItemLink = document.querySelector("[data-new-item]");
+
+    if (newItemLink) {
+        const separator = newItemLink.href.includes("?") ? "&" : "?";
+        newItemLink.href += `${separator}collection=${encodeURIComponent(collectionId)}`;
+    }
+
+    /*
+     * Inventario vacío
+     */
     if (!products.length) {
-        grid.innerHTML = '<div class="sales-empty"><i class="fi fi-rr-box-open"></i><strong>Inventario vacío</strong><span>Esta colección aún no tiene productos registrados.</span></div>';
+        grid.innerHTML = `
+            <div class="sales-empty">
+                <i class="fi fi-rr-box-open"></i>
+                <strong>Inventario vacío</strong>
+                <span>Esta colección aún no tiene productos registrados.</span>
+            </div>
+        `;
+
         return;
     }
+
+    /*
+     * FIGURITAS
+     */
     if (category === "figuritas") {
         grid.className = "product-grid figure-grid";
-        grid.innerHTML = products.map((product) => `<article class="figure-card" data-product="${product.name}"><div class="figure-image" style="background-image:url('https://images.unsplash.com/photo-1523398002811-999ca8dec234?auto=format&fit=crop&w=500&q=80')"><span class="figure-number">${product.number || "-"}</span></div><div class="figure-info"><h3>${product.name}</h3><span>Stock: <strong data-stock>${product.stock || 0}</strong></span><strong class="figure-price">S/ ${Number(product.price || 0).toFixed(2)}</strong><div class="figure-actions"><button type="button" class="edit-stock">Editar</button><button type="button" class="sell-product">Vender</button></div></div></article>`).join("");
+
+        grid.innerHTML = products.map((product) => `
+            <article
+                class="figure-card"
+                data-product="${product.id}"
+            >
+                <div
+                    class="figure-image"
+                    style="background-image: url('https://images.unsplash.com/photo-1523398002811-999ca8dec234?auto=format&fit=crop&w=500&q=80')"
+                >
+                    <span class="figure-number">
+                        ${product.number || "-"}
+                    </span>
+                </div>
+
+                <div class="figure-info">
+                    <h3>${product.name || "Figurita"}</h3>
+
+                    <span>
+                        Stock:
+                        <strong data-stock>
+                            ${Number(product.stock || 0)}
+                        </strong>
+                    </span>
+
+                    <strong class="figure-price">
+                        S/ ${Number(product.price || 0).toFixed(2)}
+                    </strong>
+
+                    <div class="figure-actions">
+                        <button
+                            type="button"
+                            class="edit-stock"
+                            data-product-id="${product.id}"
+                            data-collection-id="${collectionId}"
+                        >
+                            Editar
+                        </button>
+
+                        <button
+                            type="button"
+                            class="sell-product"
+                            data-product-id="${product.id}"
+                            data-collection-id="${collectionId}"
+                        >
+                            Vender
+                        </button>
+                    </div>
+                </div>
+            </article>
+        `).join("");
+
+        /*
+         * EDITAR STOCK
+         */
+        grid.querySelectorAll(".edit-stock").forEach((button) => {
+            button.addEventListener("click", () => {
+                const productId = button.dataset.productId;
+
+                const inventory = getInventory(collectionId);
+                const product = inventory.figuritas.find(
+                    (item) => item.id === productId
+                );
+
+                if (!product) return;
+
+                const newStock = prompt(
+                    `Nuevo stock para "${product.name}":`,
+                    product.stock || 0
+                );
+
+                if (newStock === null) return;
+
+                const stock = Number(newStock);
+
+                if (Number.isNaN(stock) || stock < 0) {
+                    alert("Ingresa una cantidad válida.");
+                    return;
+                }
+
+                product.stock = stock;
+
+                saveInventory(collectionId, inventory);
+
+                renderInventoryPage();
+            });
+        });
+
+        /*
+         * VENDER
+         */
+        grid.querySelectorAll(".sell-product").forEach((button) => {
+            button.addEventListener("click", () => {
+                const productId = button.dataset.productId;
+
+                const inventory = getInventory(collectionId);
+                const product = inventory.figuritas.find(
+                    (item) => item.id === productId
+                );
+
+                if (!product) return;
+
+                if (Number(product.stock || 0) <= 0) {
+                    alert("No hay stock disponible.");
+                    return;
+                }
+
+                product.stock = Number(product.stock || 0) - 1;
+
+                saveInventory(collectionId, inventory);
+
+                renderInventoryPage();
+            });
+        });
+
         return;
     }
-    grid.innerHTML = products.map((product) => `<article class="product-option"><h3>${product.name || "Producto"}</h3><span>${product.type || "Producto"} · Stock: ${product.stock || 0}</span><strong>Venta S/ ${Number(product.price || 0).toFixed(2)}</strong><button class="primary-button inventory-sell" data-product-id="${product.id}">Vender</button></article>`).join("");
+
+    /*
+     * RESTO DE CATEGORÍAS
+     */
+    grid.innerHTML = products.map((product) => `
+        <article class="product-option">
+            <h3>${product.name || "Producto"}</h3>
+
+            <span>
+                ${product.type || "Producto"}
+                · Stock: ${Number(product.stock || 0)}
+            </span>
+
+            <strong>
+                Venta S/ ${Number(product.price || 0).toFixed(2)}
+            </strong>
+
+            <button
+                type="button"
+                class="primary-button inventory-sell"
+                data-product-id="${product.id}"
+                data-collection-id="${collectionId}"
+            >
+                Vender
+            </button>
+        </article>
+    `).join("");
 }
+
+
 
 function setupCartPage() {
     const clientSelect = document.querySelector("#cart-client");
