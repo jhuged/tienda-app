@@ -425,6 +425,7 @@ function setupGenericForm() {
 function setupSaleForm() {
     const form = document.querySelector("[data-form='sale']");
     if (!form) return;
+
     const clientSelect = form.querySelector("[name='client']");
     const phone = form.querySelector("[name='phone']");
     const address = form.querySelector("[name='address']");
@@ -435,85 +436,228 @@ function setupSaleForm() {
 
     getClients().forEach((client) => {
         const option = document.createElement("option");
+
         option.value = client.id;
         option.textContent = `${client.name} · ${client.id}`;
-        option.dataset.phone = client.phone;
-        option.dataset.address = client.address;
+        option.dataset.phone = client.phone || "";
+        option.dataset.address = client.address || "";
+
         clientSelect.appendChild(option);
     });
 
     clientSelect.addEventListener("change", () => {
         const selected = clientSelect.selectedOptions[0];
+
         if (clientSelect.value === "new") {
             window.location.href = "nuevo-cliente.html";
             return;
         }
+
         phone.value = selected?.dataset.phone || "";
         address.value = selected?.dataset.address || "";
     });
 
     function updateTotal() {
-        const amount = [...lines.querySelectorAll("[data-price]")].reduce((sum, input) => sum + Number(input.value || 0), 0);
+        const amount = [...lines.querySelectorAll("[data-price]")]
+            .reduce(
+                (sum, input) => sum + Number(input.value || 0),
+                0
+            );
+
         total.textContent = `S/ ${amount.toFixed(2)}`;
     }
 
+    function getInventoryProducts() {
+        const products = [];
+
+        getCollections().forEach((collection) => {
+            const inventory = getInventory(collection.id);
+
+            inventoryCategories.forEach((category) => {
+                const categoryProducts = Array.isArray(inventory[category])
+                    ? inventory[category]
+                    : [];
+
+                categoryProducts.forEach((product) => {
+                    const stock = Number(product.stock || 0);
+
+                    if (stock <= 0) return;
+
+                    products.push({
+                        ...product,
+                        collectionId: collection.id,
+                        collectionName: collection.name,
+                        category
+                    });
+                });
+            });
+        });
+
+        return products;
+    }
+
     function addProduct(product) {
-        if (lines.querySelector(`[data-product='${product.name}']`)) return;
+        const existingLine = [...lines.children].find(
+            (line) => line.dataset.productId === String(product.id)
+        );
+
+        if (existingLine) {
+            return;
+        }
+
         const row = document.createElement("div");
+
         row.className = "sale-line";
+
+        row.dataset.productId = product.id;
+        row.dataset.collectionId = product.collectionId;
+        row.dataset.category = product.category;
         row.dataset.product = product.name;
-        row.innerHTML = `<span>${product.name}</span><input data-price type="number" min="0" step="0.01" value="${product.price}" aria-label="Precio de ${product.name}"><button type="button" class="remove-line" aria-label="Quitar producto">×</button>`;
-        row.querySelector("[data-price]").addEventListener("input", updateTotal);
-        row.querySelector(".remove-line").addEventListener("click", () => { row.remove(); updateTotal(); });
+
+        row.innerHTML = `
+            <span>
+                ${product.name}
+                <small>
+                    ${product.collectionName} · ${product.category}
+                </small>
+            </span>
+
+            <input
+                data-price
+                type="number"
+                min="0"
+                step="0.01"
+                value="${Number(product.price || 0)}"
+                aria-label="Precio de ${product.name}"
+            >
+
+            <button
+                type="button"
+                class="remove-line"
+                aria-label="Quitar producto"
+            >
+                ×
+            </button>
+        `;
+
+        row.querySelector("[data-price]")
+            .addEventListener("input", updateTotal);
+
+        row.querySelector(".remove-line")
+            .addEventListener("click", () => {
+                row.remove();
+                updateTotal();
+            });
+
         lines.appendChild(row);
+
         updateTotal();
+
         productSearch.value = "";
+        productResults.innerHTML = "";
         productResults.hidden = true;
     }
 
     productSearch.addEventListener("input", () => {
-        const query = productSearch.value.toLowerCase().trim();
+        const query = productSearch.value
+            .toLowerCase()
+            .trim();
+
         productResults.innerHTML = "";
-        if (!query) { productResults.hidden = true; return; }
-        sampleProducts.filter((product) => product.name.toLowerCase().includes(query)).forEach((product) => {
+
+        if (!query) {
+            productResults.hidden = true;
+            return;
+        }
+
+        const products = getInventoryProducts();
+
+        const matches = products.filter((product) => {
+            const productName = String(product.name || "")
+                .toLowerCase();
+
+            const collectionName = String(product.collectionName || "")
+                .toLowerCase();
+
+            const category = String(product.category || "")
+                .toLowerCase();
+
+            return (
+                productName.includes(query) ||
+                collectionName.includes(query) ||
+                category.includes(query)
+            );
+        });
+
+        matches.forEach((product) => {
             const option = document.createElement("button");
+
             option.type = "button";
             option.className = "search-result";
-            option.textContent = `${product.name} · S/ ${product.price.toFixed(2)}`;
-            option.addEventListener("click", () => addProduct(product));
+
+            option.textContent =
+                `${product.name} · ${product.collectionName} · S/ ${Number(product.price || 0).toFixed(2)}`;
+
+            option.addEventListener("click", () => {
+                addProduct(product);
+            });
+
             productResults.appendChild(option);
         });
-        productResults.hidden = productResults.childElementCount === 0;
+
+        productResults.hidden =
+            productResults.childElementCount === 0;
     });
 
     form.addEventListener("submit", (event) => {
         event.preventDefault();
-            const sale = {
-                id: `VEN-${Date.now()}`,
-                client: clientSelect.value,
-                products: [...lines.children]
-                    .filter((line) => line.dataset.product)
-                    .map((line) => ({
-                        name: line.dataset.product,
-                        price: Number(
-                            line.querySelector("[data-price]").value
-                        )
-                    })),
-                total: Number(
-                    total.textContent.replace("S/ ", "")
-                ),
-                paid: 0,
-                debt: Number(
-                    total.textContent.replace("S/ ", "")
-                ),
-                payments: [],
-                date: new Date().toLocaleDateString("es-PE")
-            };
 
-            saveStored(
-                "figuroom-sales",
-                [...getStored("figuroom-sales", []), sale]
-            );
+        const products = [...lines.children]
+            .filter((line) => line.dataset.productId)
+            .map((line) => ({
+                id: line.dataset.productId,
+                collectionId: line.dataset.collectionId,
+                category: line.dataset.category,
+                name: line.dataset.product,
+                price: Number(
+                    line.querySelector("[data-price]").value || 0
+                )
+            }));
+
+        if (!clientSelect.value || clientSelect.value === "new") {
+            alert("Selecciona un cliente.");
+            return;
+        }
+
+        if (!products.length) {
+            alert("Agrega al menos un producto a la venta.");
+            return;
+        }
+
+        const saleTotal = products.reduce(
+            (sum, product) => sum + Number(product.price || 0),
+            0
+        );
+
+        const sale = {
+            id: `VEN-${Date.now()}`,
+            client: clientSelect.value,
+            products,
+            total: saleTotal,
+            paid: 0,
+            debt: saleTotal,
+            payments: [],
+            date: new Date().toLocaleDateString("es-PE")
+        };
+
+        saveStored(
+            "figuroom-sales",
+            [
+                ...getStored("figuroom-sales", []),
+                sale
+            ]
+        );
+
         window.location.href = "ventas.html";
     });
 }
@@ -1189,29 +1333,40 @@ function renderInventoryPage() {
     const collectionId = params.get("collection") || "COL-001";
 
     const inventory = getInventory(collectionId);
+
     const products = Array.isArray(inventory[category])
         ? inventory[category]
         : [];
 
     /*
-     * Mantener la colección en los enlaces de esta página.
+     * Mantener la colección al crear un producto
      */
     const newItemLink = document.querySelector("[data-new-item]");
 
     if (newItemLink) {
-        const separator = newItemLink.href.includes("?") ? "&" : "?";
-        newItemLink.href += `${separator}collection=${encodeURIComponent(collectionId)}`;
+        const separator = newItemLink.href.includes("?")
+            ? "&"
+            : "?";
+
+        newItemLink.href +=
+            `${separator}collection=${encodeURIComponent(collectionId)}`;
     }
 
     /*
-     * Inventario vacío
+     * INVENTARIO VACÍO
      */
     if (!products.length) {
         grid.innerHTML = `
             <div class="sales-empty">
                 <i class="fi fi-rr-box-open"></i>
-                <strong>Inventario vacío</strong>
-                <span>Esta colección aún no tiene productos registrados.</span>
+
+                <strong>
+                    Inventario vacío
+                </strong>
+
+                <span>
+                    Esta colección aún no tiene productos registrados.
+                </span>
             </div>
         `;
 
@@ -1222,13 +1377,15 @@ function renderInventoryPage() {
      * FIGURITAS
      */
     if (category === "figuritas") {
+
         grid.className = "product-grid figure-grid";
 
         grid.innerHTML = products.map((product) => `
             <article
                 class="figure-card"
-                data-product="${product.id}"
+                data-product-id="${product.id}"
             >
+
                 <div
                     class="figure-image"
                     style="background-image: url('https://images.unsplash.com/photo-1523398002811-999ca8dec234?auto=format&fit=crop&w=500&q=80')"
@@ -1239,7 +1396,10 @@ function renderInventoryPage() {
                 </div>
 
                 <div class="figure-info">
-                    <h3>${product.name || "Figurita"}</h3>
+
+                    <h3>
+                        ${product.name || "Figurita"}
+                    </h3>
 
                     <span>
                         Stock:
@@ -1253,6 +1413,7 @@ function renderInventoryPage() {
                     </strong>
 
                     <div class="figure-actions">
+
                         <button
                             type="button"
                             class="edit-stock"
@@ -1268,10 +1429,13 @@ function renderInventoryPage() {
                             data-product-id="${product.id}"
                             data-collection-id="${collectionId}"
                         >
-                            Vender
+                            Agregar al carrito
                         </button>
+
                     </div>
+
                 </div>
+
             </article>
         `).join("");
 
@@ -1279,13 +1443,19 @@ function renderInventoryPage() {
          * EDITAR STOCK
          */
         grid.querySelectorAll(".edit-stock").forEach((button) => {
-            button.addEventListener("click", () => {
-                const productId = button.dataset.productId;
 
-                const inventory = getInventory(collectionId);
-                const product = inventory.figuritas.find(
-                    (item) => item.id === productId
-                );
+            button.addEventListener("click", () => {
+
+                const productId =
+                    button.dataset.productId;
+
+                const inventory =
+                    getInventory(collectionId);
+
+                const product =
+                    inventory.figuritas.find(
+                        (item) => item.id === productId
+                    );
 
                 if (!product) return;
 
@@ -1305,37 +1475,91 @@ function renderInventoryPage() {
 
                 product.stock = stock;
 
-                saveInventory(collectionId, inventory);
+                saveInventory(
+                    collectionId,
+                    inventory
+                );
 
                 renderInventoryPage();
             });
+
         });
 
         /*
-         * VENDER
+         * AGREGAR FIGURITA AL CARRITO
          */
         grid.querySelectorAll(".sell-product").forEach((button) => {
-            button.addEventListener("click", () => {
-                const productId = button.dataset.productId;
 
-                const inventory = getInventory(collectionId);
-                const product = inventory.figuritas.find(
-                    (item) => item.id === productId
-                );
+            button.addEventListener("click", () => {
+
+                const productId =
+                    button.dataset.productId;
+
+                const inventory =
+                    getInventory(collectionId);
+
+                const product =
+                    inventory.figuritas.find(
+                        (item) => item.id === productId
+                    );
 
                 if (!product) return;
 
-                if (Number(product.stock || 0) <= 0) {
+                const stock =
+                    Number(product.stock || 0);
+
+                if (stock <= 0) {
                     alert("No hay stock disponible.");
                     return;
                 }
 
-                product.stock = Number(product.stock || 0) - 1;
+                const cart =
+                    getStored("figuroom-cart", []);
 
-                saveInventory(collectionId, inventory);
+                const existing =
+                    cart.find(
+                        (item) =>
+                            item.productId === product.id &&
+                            item.collectionId === collectionId &&
+                            item.category === category
+                    );
 
-                renderInventoryPage();
+                if (existing) {
+
+                    if (
+                        Number(existing.quantity || 0) >= stock
+                    ) {
+                        alert(
+                            "No puedes agregar más unidades de las disponibles."
+                        );
+
+                        return;
+                    }
+
+                    existing.quantity =
+                        Number(existing.quantity || 0) + 1;
+
+                } else {
+
+                    cart.push({
+                        productId: product.id,
+                        name: product.name,
+                        collectionId,
+                        category,
+                        price: Number(product.price || 0),
+                        quantity: 1
+                    });
+
+                }
+
+                saveStored(
+                    "figuroom-cart",
+                    cart
+                );
+
+                goToCart();
             });
+
         });
 
         return;
@@ -1344,9 +1568,17 @@ function renderInventoryPage() {
     /*
      * RESTO DE CATEGORÍAS
      */
+    grid.className = "product-grid";
+
     grid.innerHTML = products.map((product) => `
-        <article class="product-option">
-            <h3>${product.name || "Producto"}</h3>
+        <article
+            class="product-option"
+            data-product-id="${product.id}"
+        >
+
+            <h3>
+                ${product.name || "Producto"}
+            </h3>
 
             <span>
                 ${product.type || "Producto"}
@@ -1363,12 +1595,89 @@ function renderInventoryPage() {
                 data-product-id="${product.id}"
                 data-collection-id="${collectionId}"
             >
-                Vender
+                Agregar al carrito
             </button>
+
         </article>
     `).join("");
-}
 
+    /*
+     * AGREGAR PRODUCTOS AL CARRITO
+     */
+    grid.querySelectorAll(".inventory-sell").forEach((button) => {
+
+        button.addEventListener("click", () => {
+
+            const productId =
+                button.dataset.productId;
+
+            const inventory =
+                getInventory(collectionId);
+
+            const product =
+                inventory[category]?.find(
+                    (item) => item.id === productId
+                );
+
+            if (!product) return;
+
+            const stock =
+                Number(product.stock || 0);
+
+            if (stock <= 0) {
+                alert("No hay stock disponible.");
+                return;
+            }
+
+            const cart =
+                getStored("figuroom-cart", []);
+
+            const existing =
+                cart.find(
+                    (item) =>
+                        item.productId === product.id &&
+                        item.collectionId === collectionId &&
+                        item.category === category
+                );
+
+            if (existing) {
+
+                if (
+                    Number(existing.quantity || 0) >= stock
+                ) {
+                    alert(
+                        "No puedes agregar más unidades de las disponibles."
+                    );
+
+                    return;
+                }
+
+                existing.quantity =
+                    Number(existing.quantity || 0) + 1;
+
+            } else {
+
+                cart.push({
+                    productId: product.id,
+                    name: product.name,
+                    collectionId,
+                    category,
+                    price: Number(product.price || 0),
+                    quantity: 1
+                });
+
+            }
+
+            saveStored(
+                "figuroom-cart",
+                cart
+            );
+
+            goToCart();
+        });
+
+    });
+}
 
 
 function setupCartPage() {
@@ -1498,8 +1807,7 @@ renderCollectionDashboard();
 renderInventoryPage();
 renderDashboard();
 setupCartPage();
-setupFigureCards();
-setupInventoryProducts();
+
 
 setupClientForm();
 setupSaleForm();
