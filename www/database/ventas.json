@@ -1,0 +1,4 @@
+[
+  {"id":"VEN-001","id_cliente":"CLI-001","fecha":"2026-09-16","total":40,"pagado":30,"deuda":10},
+  {"id":"VEN-002","id_cliente":"CLI-003","fecha":"2026-09-15","total":75,"pagado":75,"deuda":0}
+]

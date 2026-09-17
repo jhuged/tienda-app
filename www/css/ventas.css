@@ -1,0 +1,193 @@
+/* CONTENIDO */
+
+.main-content {
+    padding: 22px 16px 90px;
+    max-width: 900px;
+    margin: auto;
+}
+
+
+/* RESUMEN */
+
+.sales-summary {
+    background: var(--color-black);
+    color: white;
+
+    border-radius: 18px;
+
+    padding: 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-bottom: 25px;
+}
+
+.sales-summary span {
+    display: block;
+
+    font-size: 12px;
+
+    opacity: 0.7;
+
+    margin-bottom: 5px;
+}
+
+.sales-summary strong {
+    font-size: 28px;
+}
+
+.sales-count {
+    font-size: 12px;
+
+    background: rgba(255, 255, 255, 0.1);
+
+    padding: 8px 10px;
+
+    border-radius: 10px;
+}
+
+
+/* TÍTULO */
+
+.weekly-summary { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 22px; }
+.weekly-summary > div { background: white; border: 1px solid var(--color-line); border-radius: 12px; padding: 14px; box-shadow: var(--shadow-soft); }
+.weekly-summary span { display: block; color: var(--color-muted); font-size: 11px; margin-bottom: 6px; }
+.weekly-summary strong { font-size: 17px; }
+.action-button { display: flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; }
+
+.page-title {
+    margin-bottom: 15px;
+}
+
+.page-title h2 {
+    font-size: 20px;
+
+    margin-bottom: 5px;
+}
+
+.page-title p {
+    color: #6b7280;
+
+    font-size: 12px;
+}
+
+
+/* LISTA */
+
+.sales-list {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 10px;
+
+    margin-bottom: 20px;
+}
+
+
+/* VENTA */
+
+.sale-card {
+    background: white;
+
+    border: 1px solid #e5e7eb;
+
+    border-radius: 16px;
+
+    padding: 15px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+    color: var(--color-ink);
+    text-decoration: none;
+}
+
+.sale-main {
+    flex: 1;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 4px;
+}
+
+.sale-main strong {
+    font-size: 15px;
+}
+
+.sale-main span {
+    color: #6b7280;
+
+    font-size: 11px;
+}
+
+
+/* DINERO */
+
+.sale-money {
+    text-align: right;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 4px;
+}
+
+.sale-money strong {
+    font-size: 14px;
+}
+
+.sale-money span {
+    font-size: 11px;
+}
+
+.sale-due {
+    color: #b42318;
+}
+
+.sale-paid {
+    color: #16a34a;
+}
+
+
+/* FLECHA */
+
+.sale-arrow {
+    color: #9ca3af;
+
+    font-size: 24px;
+}
+
+
+/* BOTÓN */
+
+.primary-button {
+    width: 100%;
+
+    padding: 13px;
+
+    border-radius: 12px;
+
+    background: var(--color-black);
+
+    color: white;
+
+    font-size: 14px;
+
+    font-weight: bold;
+}
+
+@media (max-width: 600px) {
+    .weekly-summary { grid-template-columns: 1fr; }
+}
+
+.sales-empty { display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 42px 18px; background: white; border: 1px dashed var(--color-line); border-radius: 14px; color: var(--color-muted); text-align: center; }
+.sales-empty i { color: var(--color-gold-dark); font-size: 28px; }
+.sales-empty strong { color: var(--color-ink); }

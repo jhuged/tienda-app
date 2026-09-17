@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventario - Figuroom</title>
+    <link rel="stylesheet" href="../css/components.css"><link rel="stylesheet" href="https://cdn-uicons.flaticon.com/4.0.0/uicons-regular-rounded/css/uicons-regular-rounded.css"><link rel="stylesheet" href="../css/inventory.css">
+</head>
+<body>
+    <div id="topbar" data-title="Inventario" data-subtitle="Mundial 2026" data-back-href="coleccion-dashboard.html"></div>
+    <main class="inventory-page"><div class="inventory-toolbar"><div><h2 data-inventory-title>Figuritas sueltas</h2><p>Control de unidades, precios y alertas de stock.</p></div><a href="nueva-venta.html" class="primary-button">Nueva venta</a></div><div class="inventory-table-wrap"><table class="inventory-table"><thead><tr><th>Producto</th><th>SKU</th><th>Stock</th><th>Precio venta</th><th>Estado</th></tr></thead><tbody><tr><td>Figurita especial #001</td><td>FIG-001</td><td>24</td><td>S/ 3.00</td><td class="stock-ok">Disponible</td></tr><tr><td>Figurita especial #010</td><td>FIG-010</td><td>8</td><td>S/ 4.00</td><td class="stock-low">Stock bajo</td></tr><tr><td>Figurita especial #025</td><td>FIG-025</td><td>36</td><td>S/ 3.00</td><td class="stock-ok">Disponible</td></tr><tr><td>Sobre cerrado</td><td>SOB-001</td><td>4</td><td>S/ 5.00</td><td class="stock-low">Stock bajo</td></tr></tbody></table></div></main>
+    <div id="bottom-nav"></div><script src="../js/components.js"></script><script>const labels={figuritas:'Figuritas sueltas',sobres:'Sobres',albums:'Álbumes',cards:'Cards',paquetones:'Paquetones',promociones:'Promociones',preventa:'Preventa'};document.querySelector('[data-inventory-title]').textContent=labels[new URLSearchParams(location.search).get('category')]||labels.figuritas;</script>
+</body>
+</html>

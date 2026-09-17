@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Clientes - Figuroom</title>
+
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/4.0.0/uicons-regular-rounded/css/uicons-regular-rounded.css">
+    <link rel="stylesheet" href="../css/clientes.css">
+</head>
+
+<body>
+
+    <!-- BARRA SUPERIOR -->
+
+    <div id="topbar" data-title="Clientes" data-subtitle="Clientes registrados"></div>
+
+
+    <!-- CONTENIDO -->
+
+    <main class="main-content">
+
+        <section class="page-title">
+
+            <h2>Mis clientes</h2>
+
+            <p>
+                Consulta y administra tus clientes
+            </p>
+
+        </section>
+
+
+        <!-- BOTÓN NUEVO CLIENTE -->
+
+        <a class="primary-button action-button" href="nuevo-cliente.html"><i class="fi fi-rr-user-add"></i> Nuevo cliente</a>
+
+        <div class="client-filter"><i class="fi fi-rr-search"></i><input type="search" placeholder="Buscar por nombre, ID o número" aria-label="Buscar clientes"></div>
+
+
+        <!-- LISTA DE CLIENTES -->
+
+        <section class="clients-section" data-clients-list>
+
+            <a href="cliente-detalle.html?id=CLI-001" class="client-card legacy-card">
+
+                <div class="client-avatar">
+                    JP
+                </div>
+
+                <div class="client-info">
+
+                    <strong>
+                        Juan Pérez
+                    </strong>
+
+                    <span>
+                        Cliente #001
+                    </span>
+
+                    <small>
+                        Compras: 3
+                    </small>
+
+                </div>
+
+                <span class="client-arrow"><i class="fi fi-rr-angle-right"></i></span>
+
+            </a>
+
+
+            <a href="cliente-detalle.html?id=CLI-002" class="client-card legacy-card">
+
+                <div class="client-avatar">
+                    CP
+                </div>
+
+                <div class="client-info">
+
+                    <strong>
+                        Carlos Pérez
+                    </strong>
+
+                    <span>
+                        Cliente #002
+                    </span>
+
+                    <small>
+                        Compras: 1
+                    </small>
+
+                </div>
+
+                <span class="client-arrow"><i class="fi fi-rr-angle-right"></i></span>
+
+            </a>
+
+
+            <a href="cliente-detalle.html?id=CLI-003" class="client-card legacy-card">
+
+                <div class="client-avatar">
+                    MG
+                </div>
+
+                <div class="client-info">
+
+                    <strong>
+                        María García
+                    </strong>
+
+                    <span>
+                        Cliente #003
+                    </span>
+
+                    <small>
+                        Compras: 5
+                    </small>
+
+                </div>
+
+                <span class="client-arrow"><i class="fi fi-rr-angle-right"></i></span>
+
+            </a>
+
+        </section>
+
+    </main>
+
+
+    <!-- BARRA INFERIOR -->
+
+    <div id="bottom-nav"></div>
+
+    <script src="../js/components.js"></script>
+    <script>
+        const clientFilter = document.querySelector('.client-filter input');
+        clientFilter.addEventListener('input', () => document.querySelectorAll('.client-card').forEach(card => { card.hidden = !card.textContent.toLowerCase().includes(clientFilter.value.toLowerCase()); }));
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,4 @@
+[
+  {"id_coleccion":"COL-001","nombre":"Card dorada edición limitada","tipo":"Premium","precio_compra":4,"precio_venta":8,"stock":12},
+  {"id_coleccion":"COL-001","nombre":"Card jugador destacado","tipo":"Regular","precio_compra":2,"precio_venta":5,"stock":32}
+]

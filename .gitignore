@@ -1,0 +1,21 @@
+# Dependencias de Node
+node_modules/
+
+# Android / Gradle
+android/.gradle/
+android/build/
+android/app/build/
+android/.idea/
+
+# Archivos locales de Android Studio
+*.iml
+
+# APKs generados
+*.apk
+
+# Logs
+*.log
+
+# Archivos temporales
+.DS_Store
+Thumbs.db

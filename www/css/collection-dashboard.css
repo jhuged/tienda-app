@@ -1,0 +1,22 @@
+.collection-dashboard { max-width: 1100px; margin: 0 auto; padding: 24px 16px 100px; }
+.collection-hero { display: grid; grid-template-columns: 1.2fr 1fr; gap: 18px; align-items: stretch; margin-bottom: 24px; }
+.collection-cover { min-height: 220px; border-radius: 18px; background: linear-gradient(135deg, rgba(23,23,23,.86), rgba(155,116,34,.8)), url('https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?auto=format&fit=crop&w=1000&q=80') center/cover; color: white; padding: 24px; display: flex; flex-direction: column; justify-content: end; }
+.collection-cover h2 { font-size: clamp(28px, 5vw, 46px); margin-bottom: 4px; }
+.collection-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.stat-card { background: white; border: 1px solid var(--color-line); border-radius: 14px; padding: 18px; box-shadow: var(--shadow-soft); }
+.stat-card span { display: block; color: var(--color-muted); font-size: 12px; margin-bottom: 8px; }
+.stat-card strong { font-size: 24px; }
+.inventory-summary { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-bottom: 24px; }
+.inventory-summary .data-card { margin: 0; }
+.inventory-summary .data-card:last-child { border-top: 4px solid #b42318; }
+.inventory-summary .card-label { color: var(--color-black); font-size: 14px; }
+.progress { height: 9px; border-radius: 9px; background: var(--color-gold-soft); overflow: hidden; margin: 10px 0 6px; }
+.progress span { display: block; width: 68%; height: 100%; background: var(--color-gold); }
+.category-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.category-card { background: var(--color-black); color: white; border-radius: 13px; padding: 18px; min-height: 120px; display: flex; flex-direction: column; justify-content: space-between; }
+.category-card i { color: var(--color-gold); font-size: 24px; }
+.category-card small { color: #d9d3c7; }
+.category-add-link { align-self: flex-start; margin-top: 8px; padding: 6px 8px; border: 0; border-radius: 7px; background: var(--color-gold); color: var(--color-black); font-size: 11px; font-weight: 800; cursor: pointer; }
+.stock-alert-row { color: var(--color-ink); text-decoration: none; }
+.stock-alert-row:hover { color: var(--color-gold-dark); }
+@media (max-width: 700px) { .collection-hero, .inventory-summary { grid-template-columns: 1fr; } .category-grid { grid-template-columns: repeat(2, 1fr); } }

@@ -1,0 +1,281 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Dashboard de colección - Figuroom</title>
+
+    <link rel="stylesheet" href="../css/components.css">
+    <link
+        rel="stylesheet"
+        href="https://cdn-uicons.flaticon.com/4.0.0/uicons-regular-rounded/css/uicons-regular-rounded.css"
+    >
+    <link rel="stylesheet" href="../css/collection-dashboard.css">
+</head>
+
+<body>
+
+    <div
+        id="topbar"
+        data-title="Dashboard de colección"
+        data-subtitle="Inventario y ventas"
+        data-back-href="colecciones.html"
+    ></div>
+
+    <main class="collection-dashboard">
+
+        <section class="collection-hero">
+
+            <div class="collection-cover" data-collection-cover>
+                <span data-collection-publisher>Editorial</span>
+
+                <h2 data-collection-name>
+                    Colección
+                </h2>
+
+                <span data-collection-year>
+                    Año
+                </span>
+            </div>
+
+            <div class="collection-stats">
+
+                <article class="stat-card">
+                    <span>Productos activos</span>
+                    <strong data-stat-products>0</strong>
+                </article>
+
+                <article class="stat-card">
+                    <span>Ventas</span>
+                    <strong data-stat-sales>S/ 0.00</strong>
+                </article>
+
+                <article class="stat-card">
+                    <span>Stock bajo</span>
+                    <strong data-stat-low-stock>0</strong>
+                </article>
+
+                <article class="stat-card">
+                    <span>Agregada</span>
+                    <strong data-stat-date>Hoy</strong>
+                </article>
+
+            </div>
+
+        </section>
+
+
+        <section class="inventory-summary">
+
+            <div class="data-card">
+
+                <div class="card-label">
+                    Inventario disponible
+                </div>
+
+                <strong data-inventory-percentage>
+                    0%
+                </strong>
+
+                <div class="progress">
+                    <span
+                        data-inventory-progress
+                        style="width: 0"
+                    ></span>
+                </div>
+
+                <small
+                    class="gold-text"
+                    data-inventory-message
+                >
+                    Aún no hay productos
+                </small>
+
+            </div>
+
+
+            <div class="data-card">
+
+                <div class="card-label">
+                    Alertas de stock
+                </div>
+
+                <div class="mini-row stock-alert-row">
+                    <span>
+                        Stock bajo
+                    </span>
+
+                    <strong data-low-stock-count>
+                        0 productos
+                    </strong>
+                </div>
+
+                <div class="mini-row stock-alert-row">
+                    <span>
+                        Inventario vacío
+                    </span>
+
+                    <strong data-empty-stock-count>
+                        0 categorías
+                    </strong>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <section>
+
+            <div class="section-heading">
+
+                <div>
+                    <h2>
+                        Inventario por producto
+                    </h2>
+
+                    <p>
+                        Cada categoría administra su propio inventario.
+                    </p>
+                </div>
+
+            </div>
+
+
+            <div class="category-grid">
+
+                <a
+                    class="category-card"
+                    data-category-link="figuritas"
+                    href="inventario-figuritas.html"
+                >
+                    <i class="fi fi-rr-star"></i>
+
+                    <strong>
+                        Figuritas sueltas
+                    </strong>
+
+                    <small data-category-count="figuritas">
+                        0 unidades
+                    </small>
+                </a>
+
+
+                <a
+                    class="category-card"
+                    data-category-link="sobres"
+                    href="inventario-sobres.html"
+                >
+                    <i class="fi fi-rr-envelope"></i>
+
+                    <strong>
+                        Sobres
+                    </strong>
+
+                    <small data-category-count="sobres">
+                        0 unidades
+                    </small>
+                </a>
+
+
+                <a
+                    class="category-card"
+                    data-category-link="albums"
+                    href="inventario-albums.html"
+                >
+                    <i class="fi fi-rr-book-alt"></i>
+
+                    <strong>
+                        Álbumes
+                    </strong>
+
+                    <small data-category-count="albums">
+                        0 unidades
+                    </small>
+                </a>
+
+
+                <a
+                    class="category-card"
+                    data-category-link="cards"
+                    href="inventario-cards.html"
+                >
+                    <i class="fi fi-rr-playing-cards"></i>
+
+                    <strong>
+                        Cards
+                    </strong>
+
+                    <small data-category-count="cards">
+                        0 unidades
+                    </small>
+                </a>
+
+
+                <a
+                    class="category-card"
+                    data-category-link="paquetones"
+                    href="inventario-paquetones.html"
+                >
+                    <i class="fi fi-rr-box"></i>
+
+                    <strong>
+                        Paquetones
+                    </strong>
+
+                    <small data-category-count="paquetones">
+                        0 unidades
+                    </small>
+                </a>
+
+
+                <a
+                    class="category-card"
+                    data-category-link="promociones"
+                    href="inventario-promociones.html"
+                >
+                    <i class="fi fi-rr-badge"></i>
+
+                    <strong>
+                        Promociones
+                    </strong>
+
+                    <small data-category-count="promociones">
+                        0 activas
+                    </small>
+                </a>
+
+
+                <a
+                    class="category-card"
+                    data-category-link="preventa"
+                    href="preventa.html"
+                >
+                    <i class="fi fi-rr-calendar"></i>
+
+                    <strong>
+                        Preventa
+                    </strong>
+
+                    <small data-category-count="preventa">
+                        0 pedidos
+                    </small>
+                </a>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <div id="bottom-nav"></div>
+
+
+    <script src="../js/components.js"></script>
+
+</body>
+</html>
+

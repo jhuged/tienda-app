@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ventas - Figuroom</title>
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/4.0.0/uicons-regular-rounded/css/uicons-regular-rounded.css">
+    <link rel="stylesheet" href="../css/ventas.css">
+</head>
+<body>
+    <div id="topbar" data-title="Ventas" data-subtitle="Registro de ventas"></div>
+    <main class="main-content">
+        <section class="sales-summary">
+            <div><span>Ventas de hoy</span><strong data-sales-total>S/ 0.00</strong></div>
+            <div class="sales-count"><span data-sales-count>0 ventas</span></div>
+        </section>
+        <section class="weekly-summary">
+            <div><span>Ventas totales</span><strong data-sales-total>S/ 0.00</strong></div>
+            <div><span>Ventas de hoy</span><strong>S/ 0.00</strong></div>
+            <div><span>Ventas de la semana</span><strong>0</strong></div>
+        </section>
+        <section class="page-title"><h2>Historial de ventas</h2><p>Cuando confirmes pedidos desde el carrito aparecerán aquí.</p></section>
+        <section class="sales-list" data-sales-list>
+            <div class="sales-empty"><i class="fi fi-rr-receipt"></i><strong>Aún no hay ventas</strong><span>Agrega productos al carrito para comenzar.</span></div>
+        </section>
+        <a class="primary-button action-button" href="preparar-carrito.html"><i class="fi fi-rr-shopping-cart"></i> Abrir carrito</a>
+    </main>
+    <div id="bottom-nav"></div>
+    <script src="../js/components.js"></script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrito - Figuroom</title>
+    <link rel="stylesheet" href="../css/components.css"><link rel="stylesheet" href="https://cdn-uicons.flaticon.com/4.0.0/uicons-regular-rounded/css/uicons-regular-rounded.css"><link rel="stylesheet" href="../css/forms.css">
+</head>
+<body>
+    <div id="topbar" data-title="Carrito" data-subtitle="Confirma un pedido"></div>
+    <main class="form-layout">
+        <form class="form-card" data-form="sale">
+            <h2>Detalle de la venta</h2><p>Selecciona un cliente y añade productos. El precio de cada línea se puede modificar.</p>
+            <div class="form-grid">
+                <div class="field full"><label for="sale-client">Cliente</label><select id="sale-client" name="client" required><option value="">Selecciona un cliente</option><option value="new">+ Nuevo cliente</option></select></div>
+                <div class="field"><label for="sale-phone">Número</label><input id="sale-phone" name="phone" readonly></div>
+                <div class="field"><label for="sale-address">Lugar o dirección</label><input id="sale-address" name="address" readonly></div>
+                <div class="field full"><label for="product-search">Buscar productos</label><input id="product-search" name="productSearch" autocomplete="off" placeholder="Escribe un producto"><div class="search-results" data-product-results hidden></div></div>
+            </div>
+            <div class="sale-lines" data-sale-lines><div class="card-label">Productos seleccionados</div></div>
+            <div class="sale-total"><span>Total de venta</span><strong data-sale-total>S/ 0.00</strong></div>
+            <div class="form-actions"><a class="secondary-button" href="ventas.html">Cancelar</a><button class="primary-button" type="submit">Confirmar venta</button></div>
+        </form>
+    </main>
+    <div id="bottom-nav"></div><script src="../js/components.js"></script>
+</body>
+</html>

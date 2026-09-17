@@ -1,0 +1,337 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&display=swap');
+
+:root {
+     --color-gold: #c89b3c;
+     --color-gold-dark: #9b7422;
+    --color-gold-soft: #fffaf0;
+     --color-black: #171717;
+     --color-ink: #292929;
+     --color-muted: #77736b;
+     --color-line: #e7e1d5;
+    --color-background: #ffffff;
+     --color-white: #ffffff;
+     --shadow-soft: 0 8px 24px rgba(46, 37, 20, 0.07);
+}
+
+/* ========================================
+    RESET
+======================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--color-background);
+    color: var(--color-ink);
+    padding-bottom: 78px;
+}
+
+button,
+a {
+    font-family: inherit;
+}
+
+button {
+    border: none;
+    cursor: pointer;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:focus-visible,
+button:focus-visible {
+    outline: 3px solid rgba(200, 155, 60, 0.35);
+    outline-offset: 2px;
+}
+
+
+/* ========================================
+   TOP BAR
+======================================== */
+
+.topbar {
+    height: 70px;
+
+    background: #ffffff;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 18px;
+
+    border-bottom: 1px solid #e5e7eb;
+
+    position: sticky;
+    top: 0;
+
+    z-index: 100;
+}
+
+.topbar-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+
+/* MARCA */
+
+.topbar-brand {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.topbar h1 {
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1.1;
+    color: var(--color-gold-dark);
+    margin: 0;
+}
+
+.topbar-brand span {
+    font-size: 12px;
+    color: #6b7280;
+    margin-top: 3px;
+}
+
+
+/* ========================================
+   BOTONES DE LA TOP BAR
+======================================== */
+
+.icon-button {
+    width: 40px;
+    height: 40px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: var(--color-white);
+
+    border-radius: 12px;
+
+    color: var(--color-gold-dark);
+
+    transition:
+        background-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.icon-button i {
+    font-size: 18px;
+    line-height: 1;
+}
+
+.icon-button:hover {
+    background: var(--color-gold-soft);
+}
+
+.icon-button:active {
+    transform: scale(0.95);
+}
+
+
+/* ========================================
+   BOTÓN VOLVER
+======================================== */
+
+.back-button {
+    width: 40px;
+    height: 40px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: var(--color-white);
+
+    border-radius: 12px;
+
+    color: var(--color-gold-dark);
+
+    font-size: 20px;
+}
+
+
+/* ========================================
+   BOTTOM NAVIGATION
+======================================== */
+
+.bottom-nav {
+    position: fixed;
+
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+    height: 74px;
+
+    background: #ffffff;
+
+    border-top: 1px solid #e5e7eb;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+
+    padding: 6px 8px;
+
+    z-index: 100;
+}
+
+
+/* ========================================
+   ITEMS DE NAVEGACIÓN
+======================================== */
+
+.nav-item {
+    min-width: 58px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    gap: 4px;
+
+    color: #94a3b8;
+
+    font-size: 18px;
+
+    border-radius: 12px;
+
+    transition:
+        color 0.2s ease,
+        background-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.nav-item i {
+    font-size: 18px;
+    line-height: 1;
+}
+
+.nav-item small {
+    font-size: 10px;
+    font-weight: 500;
+    line-height: 1;
+}
+
+
+/* ========================================
+   ELEMENTO ACTIVO
+======================================== */
+
+.nav-item.active {
+    color: var(--color-gold-dark);
+}
+
+.nav-item.active i {
+    color: var(--color-gold-dark);
+}
+
+.nav-item:hover {
+    color: var(--color-gold-dark);
+}
+
+.nav-item:active {
+    transform: scale(0.95);
+}
+
+@media (min-width: 700px) {
+    .bottom-nav {
+        left: 50%;
+        right: auto;
+        width: min(100%, 620px);
+        transform: translateX(-50%);
+        border-left: 1px solid #e5e7eb;
+        border-right: 1px solid #e5e7eb;
+    }
+}
+
+.topbar,
+.bottom-nav {
+    background: var(--color-white);
+    border-color: var(--color-line);
+}
+
+.topbar h1,
+.icon-button,
+.back-button,
+.nav-item.active,
+.nav-item.active i,
+.nav-item:hover {
+    color: var(--color-gold-dark);
+}
+
+.icon-button,
+.back-button {
+    background: var(--color-gold-soft);
+}
+
+.primary-button,
+.dashboard-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 46px;
+    padding: 12px 18px;
+    color: var(--color-white) !important;
+    text-decoration: none;
+    background: var(--color-black) !important;
+    border: 1px solid var(--color-black);
+    border-radius: 10px;
+    transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.primary-button:hover,
+.dashboard-button:hover {
+    background: var(--color-gold-dark) !important;
+    border-color: var(--color-gold-dark);
+}
+
+.form-card,
+.data-card,
+.summary-card,
+.money-card,
+.dashboard-card,
+.dashboard-empty,
+.collection-grid-card,
+.client-card,
+.sale-card {
+    box-shadow: var(--shadow-soft);
+}
+
+.muted-link {
+    color: var(--color-muted) !important;
+}
+
+.primary-button:active,
+.dashboard-button:active {
+    transform: translateY(1px);
+}
+
+.main-content,
+.form-layout,
+.detail-layout,
+.inventory-page,
+.collection-dashboard,
+.dashboard-content {
+    padding-top: 30px;
+}
+
+.topbar-actions { display: flex; align-items: center; gap: 8px; }
+.cart-button { display: inline-flex; align-items: center; gap: 6px; padding: 9px 11px; border: 1px solid var(--color-gold); border-radius: 9px; color: var(--color-gold-dark); background: var(--color-white); font-size: 12px; font-weight: 800; }
+.cart-button:hover { background: var(--color-gold-soft); }
+@media (max-width: 560px) { .cart-button span { display: none; } .cart-button { width: 40px; height: 40px; justify-content: center; padding: 0; } }

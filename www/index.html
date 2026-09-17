@@ -1,0 +1,272 @@
+
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Figuroom</title>
+
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/4.0.0/uicons-regular-rounded/css/uicons-regular-rounded.css">
+    <link rel="stylesheet" href="css/index.css">
+    
+</head>
+
+<body>
+    <!-- TOP BAR -->
+    <div id="topbar"></div>
+
+
+    <!-- CONTENIDO -->
+
+    <main class="main-content">
+
+
+        <!-- BIENVENIDA -->
+
+        <section class="welcome">
+
+            <h2>¡Hola, Jhuged!</h2>
+
+            <p>
+                Bienvenido a tu tienda.
+            </p>
+
+        </section>
+
+
+        <!-- COLECCIONES -->
+
+        <section class="home-section">
+
+            <div class="section-heading">
+
+                <div>
+                    <h2>Colecciones</h2>
+                    <p>Últimas colecciones</p>
+                </div>
+
+                <a href="pages/colecciones.html" class="muted-link">
+                    Ver todo
+                </a>
+
+            </div>
+
+
+            <!-- SLIDER -->
+
+            <div class="home-slider" data-home-collections>
+
+                <a href="pages/coleccion-dashboard.html?collection=mundial-2026" class="home-collection-card">
+
+                    <div class="home-collection-image" style="background-image: url('https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?auto=format&fit=crop&w=600&q=80');">
+                    </div>
+
+                    <strong>
+                        Mundial 2026
+                    </strong>
+
+                    <small>
+                        Álbum y figuritas
+                    </small>
+
+                </a>
+
+
+                <a href="pages/coleccion-dashboard.html?collection=thundercats" class="home-collection-card">
+
+                    <div class="home-collection-image" style="background-image: url('https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=600&q=80');">
+                    </div>
+
+                    <strong>
+                        Thundercats
+                    </strong>
+
+                    <small>
+                        Álbum y colección
+                    </small>
+
+                </a>
+
+
+                <a href="pages/coleccion-dashboard.html?collection=dragon-ball" class="home-collection-card">
+
+                    <div class="home-collection-image" style="background-image: url('https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=600&q=80');">
+                    </div>
+
+                    <strong>
+                        Dragon Ball
+                    </strong>
+
+                    <small>
+                        Álbum y figuritas
+                    </small>
+
+                </a>
+
+
+                <a href="pages/coleccion-dashboard.html?collection=superheroes" class="home-collection-card">
+
+                    <div class="home-collection-image" style="background-image: url('https://images.unsplash.com/photo-1531259683007-016a7b628fc3?auto=format&fit=crop&w=600&q=80');">
+                    </div>
+
+                    <strong>
+                        Superhéroes
+                    </strong>
+
+                    <small>
+                        Álbum y colección
+                    </small>
+
+                </a>
+
+            </div>
+
+            <a href="pages/nueva-coleccion.html" class="outline-action"><i class="fi fi-rr-plus"></i> Nueva colección</a>
+
+        </section>
+
+
+        <!-- CLIENTES -->
+
+        <section class="home-section">
+
+            <div class="section-heading">
+
+                <div>
+                    <h2>Clientes</h2>
+                    <p>Clientes registrados</p>
+                </div>
+
+            </div>
+
+            <div class="summary-card">
+
+                <strong data-client-count>0</strong>
+
+                <span>clientes registrados · 3 mejores clientes este mes</span>
+
+            </div>
+
+            <a href="pages/nuevo-cliente.html" class="primary-button action-button"><i class="fi fi-rr-user-add"></i> Nuevo cliente</a>
+
+        </section>
+
+
+        <!-- VENTAS -->
+
+        <section class="home-section">
+
+            <div class="section-heading">
+
+                <div>
+                    <h2>Ventas</h2>
+                    <p>Resumen de hoy</p>
+                </div>
+
+            </div>
+
+            <div class="summary-card">
+
+                <strong data-home-sales-total>
+                    S/ 0.00
+                </strong>
+
+                <span>
+                    ventas del día
+                </span>
+
+            </div>
+
+            <div class="data-card compact-table-card" data-home-sales-list>
+                <div class="card-label">Ventas de la semana</div>
+                <div class="mini-row"><span>Sin ventas todavía</span><strong>S/ 0.00</strong></div>
+            </div>
+
+            <a href="pages/preparar-carrito.html" class="primary-button action-button"><i class="fi fi-rr-shopping-cart"></i> Abrir carrito</a>
+
+        </section>
+
+
+        <!-- INGRESOS -->
+
+        <section class="home-section">
+
+            <div class="section-heading">
+
+                <div>
+                    <h2>Ingresos y cuentas por cobrar</h2>
+                    <p>Resumen del día</p>
+                </div>
+
+            </div>
+
+
+            <div class="money-grid">
+                <div class="money-card">
+
+                    <span>
+                        Vendido
+                    </span>
+
+                    <strong data-home-income-total>
+                        S/ 0.00
+                    </strong>
+
+                </div>
+
+
+                <div class="money-card">
+
+                    <span>
+                        Gastado
+                    </span>
+
+                    <strong data-home-expense-total>
+                        S/ 0.00
+                    </strong>
+
+                </div>
+
+            </div>
+
+            <div class="data-card debt-list">
+                <div class="card-label">Pendientes de pago</div>
+                <div class="mini-row"><span>Sin deudas todavía</span><strong class="debt-value">S/ 0.00</strong></div>
+            </div>
+
+
+            <a class="primary-button action-button" href="pages/nuevo-ingreso.html">
+                <i class="fi fi-rr-plus"></i> Nuevo ingreso
+            </a>
+
+        </section>
+
+
+        <!-- ACCESOS RÁPIDOS -->
+
+        <section class="quick-section">
+
+            <h2>Accesos rápidos</h2>
+            <a href="pages/dashboard.html" class="dashboard-button">
+                <i class="fi fi-rr-chart-histogram"></i> Abrir Dashboard
+            </a>
+
+        </section>
+
+
+    </main>
+
+
+    <!-- BOTTOM BAR -->
+    <div id="bottom-nav"></div>
+
+
+    <!-- COMPONENTES REUTILIZABLES -->
+    <script src="js/components.js"></script>
+
+</body>
+
+</html>

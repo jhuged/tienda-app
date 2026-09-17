@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nuevo cliente - Figuroom</title>
+    <link rel="stylesheet" href="../css/components.css"><link rel="stylesheet" href="https://cdn-uicons.flaticon.com/4.0.0/uicons-regular-rounded/css/uicons-regular-rounded.css"><link rel="stylesheet" href="../css/forms.css">
+</head>
+<body>
+    <div id="topbar" data-title="Nuevo cliente" data-subtitle="Añade un cliente"></div>
+    <main class="form-layout">
+        <form class="form-card" data-form="client">
+            <h2>Información del cliente</h2><p>El ID se genera automáticamente al abrir este formulario.</p>
+            <div class="form-grid">
+                <div class="field"><label for="client-id">ID de cliente</label><input id="client-id" name="clientId" readonly></div>
+                <div class="field"><label for="client-name">Nombre completo</label><input id="client-name" name="name" required></div>
+                <div class="field"><label for="client-phone">Número</label><input id="client-phone" name="phone" type="tel" required></div>
+                <div class="field"><label for="client-type">Tipo de cliente</label><select id="client-type" name="type"><option>Básico</option><option>Revendedor</option></select></div>
+                <div class="field full"><label for="client-address">Dirección o referencia</label><textarea id="client-address" name="address" required></textarea></div>
+            </div>
+            <div class="form-actions"><a class="secondary-button" href="clientes.html">Cancelar</a><button class="primary-button" type="submit">Guardar cliente</button></div>
+        </form>
+    </main>
+    <div id="bottom-nav"></div><script src="../js/components.js"></script>
+</body>
+</html>

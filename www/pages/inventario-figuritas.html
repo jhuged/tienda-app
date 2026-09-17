@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Figuroom - Figuritas</title>
+
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="../css/inventario.css">
+</head>
+
+<body>
+
+    <!-- TOPBAR -->
+    <div
+        data-component="topbar"
+        data-title="Figuroom"
+        data-subtitle="Figuritas"
+        data-back-href="coleccion-dashboard.html"
+    ></div>
+
+    <!-- CONTENIDO -->
+    <main class="page-content inventory-page">
+
+        <section class="page-header">
+            <div>
+                <h1>Figuritas</h1>
+                <p>Administra las figuritas de esta colección.</p>
+            </div>
+
+            <a
+                href="nueva-figurita.html"
+                class="btn btn-primary"
+                data-new-item
+            >
+                <i class="fi fi-rr-plus"></i>
+                Nueva figurita
+            </a>
+        </section>
+
+        <!--
+            El contenido se genera dinámicamente desde app.js.
+            No colocar productos directamente aquí.
+        -->
+        <section
+            class="product-grid figure-grid"
+            data-inventory-grid
+        ></section>
+
+    </main>
+
+    <!-- BOTTOM NAV -->
+    <div data-component="bottom-nav"></div>
+
+    <script src="../js/components.js"></script>
+    <script src="../js/app.js"></script>
+
+</body>
+</html>

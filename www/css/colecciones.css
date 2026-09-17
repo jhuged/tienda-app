@@ -1,0 +1,270 @@
+/* PÁGINA */
+
+.main-content {
+    padding: 22px 16px 90px;
+    max-width: 900px;
+    margin: auto;
+}
+
+
+/* BOTÓN VOLVER */
+
+.back-button {
+    font-size: 32px;
+    line-height: 1;
+    padding: 0 8px;
+}
+
+
+/* TÍTULO */
+
+.page-title {
+    margin-bottom: 20px;
+}
+
+.page-title h2 {
+    font-size: 24px;
+    margin-bottom: 5px;
+}
+
+.page-title p {
+    color: #6b7280;
+    font-size: 14px;
+}
+
+
+/* SLIDER */
+
+.collections-slider {
+    display: flex;
+    gap: 14px;
+
+    overflow-x: auto;
+
+    padding-bottom: 10px;
+
+    scroll-snap-type: x mandatory;
+
+    scrollbar-width: none;
+}
+
+.collections-slider::-webkit-scrollbar {
+    display: none;
+}
+
+
+/* TARJETA */
+
+.collection-card {
+    min-width: 190px;
+
+    background: white;
+
+    border: 1px solid #e5e7eb;
+
+    border-radius: 16px;
+
+    overflow: hidden;
+
+    scroll-snap-align: start;
+
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+
+/* IMAGEN */
+
+.collection-image {
+    height: 130px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: var(--color-white);
+
+    font-size: 55px;
+}
+
+
+/* INFORMACIÓN */
+
+.collection-info {
+    padding: 14px;
+}
+
+.collection-info strong {
+    display: block;
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+
+.collection-info small {
+    color: #6b7280;
+    font-size: 12px;
+}
+
+
+/* TODAS LAS COLECCIONES */
+
+.all-collections {
+    margin-top: 30px;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-bottom: 14px;
+}
+
+.section-header h2 {
+    font-size: 19px;
+}
+
+.section-header button {
+    background: transparent;
+    color: var(--color-gold-dark);
+    font-weight: bold;
+    font-size: 13px;
+}
+
+
+/* GRID */
+
+.collections-grid {
+    display: grid;
+
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 12px;
+}
+
+
+/* TARJETA GRID */
+
+.collection-grid-card {
+    min-height: 140px;
+
+    background: white;
+
+    border: 1px solid #e5e7eb;
+
+    border-radius: 16px;
+
+    padding: 18px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    align-items: center;
+
+    gap: 10px;
+
+    font-size: 42px;
+    color: var(--color-ink);
+    text-decoration: none;
+    align-items: stretch;
+}
+
+.collection-create-card {
+    min-height: 90px;
+    border: 1px dashed var(--color-gold);
+    border-radius: 14px;
+    color: var(--color-gold-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 16px;
+    font-weight: 800;
+}
+
+.collection-grid-card .collection-image {
+    width: 100%;
+    height: 130px;
+    background-position: center;
+    background-size: cover;
+    border-radius: 10px;
+}
+
+.collection-grid-card small {
+    color: var(--color-muted);
+    font-size: 11px;
+}
+
+.collection-grid-card strong {
+    font-size: 14px;
+}
+
+
+/* MÓVIL */
+
+@media (max-width: 500px) {
+
+    .collection-card {
+        min-width: 175px;
+    }
+
+}
+
+
+/* PANTALLAS GRANDES */
+
+@media (min-width: 700px) {
+
+    .collections-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+}
+
+
+/* Acciones de las tarjetas de colecciones */
+.collection-card-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px 12px;
+}
+
+.collection-card-actions button {
+    width: 34px;
+    height: 34px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--color-line);
+    border-radius: 8px;
+    background: var(--color-white);
+    cursor: pointer;
+    padding: 0;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.collection-card-actions button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+}
+
+.collection-card-actions i {
+    font-size: 15px;
+    line-height: 1;
+}
+
+.collection-action-edit i {
+    color: var(--color-gold);
+}
+
+.collection-action-delete i {
+    color: #c0392b;
+}
+
+.collection-card-actions button:active {
+    transform: scale(0.95);
+}
